@@ -1,6 +1,7 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import type { CSSProperties } from "react"
+import { supabase } from "../supabase"
 import questions from "../data/questions/air-law/multiple-choice"
 
 export default function Home() {
@@ -8,13 +9,36 @@ export default function Home() {
   const [selected, setSelected] = useState<number | null>(null)
   const [score, setScore] = useState(0)
   const [finished, setFinished] = useState(false)
+  const [userId, setUserId] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        window.location.href = "/login"
+      } else {
+        setUserId(session.user.id)
+        setLoading(false)
+      }
+    })
+  }, [])
 
   const q = questions[current]
 
-  function handleAnswer(index: number) {
+  async function handleAnswer(index: number) {
     if (selected !== null) return
     setSelected(index)
-    if (index === q.correct) setScore(s => s + 1)
+    const isCorrect = index === q.correct
+    if (isCorrect) setScore(s => s + 1)
+
+    if (userId) {
+      await supabase.from("progress").insert({
+        user_id: userId,
+        question_id: q.id,
+        subject: q.subject,
+        correct: isCorrect
+      })
+    }
   }
 
   function handleNext() {
@@ -24,6 +48,19 @@ export default function Home() {
       setCurrent(c => c + 1)
       setSelected(null)
     }
+  }
+
+  async function handleLogout() {
+    await supabase.auth.signOut()
+    window.location.href = "/login"
+  }
+
+  if (loading) {
+    return (
+      <main style={styles.container}>
+        <p style={{ color: "#666" }}>Loading...</p>
+      </main>
+    )
   }
 
   if (finished) {
@@ -40,6 +77,9 @@ export default function Home() {
           <button style={styles.button} onClick={() => { setCurrent(0); setSelected(null); setScore(0); setFinished(false) }}>
             Try again
           </button>
+          <button style={{ ...styles.button, background: "#f0f2f5", color: "#666", marginTop: "0.75rem" }} onClick={handleLogout}>
+            Log out
+          </button>
         </div>
       </main>
     )
@@ -51,7 +91,10 @@ export default function Home() {
 
         <div style={styles.topBar}>
           <span style={styles.subject}>Air Law</span>
-          <span style={styles.counter}>{current + 1} / {questions.length}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <span style={styles.counter}>{current + 1} / {questions.length}</span>
+            <button onClick={handleLogout} style={styles.logoutBtn}>Log out</button>
+          </div>
         </div>
 
         <div style={styles.progressBar}>
@@ -107,5 +150,6 @@ const styles: Record<string, CSSProperties> = {
   question: { fontSize: "1.15rem", fontWeight: "600", marginBottom: "1.5rem", lineHeight: "1.6", color: "#1a1a1a" },
   option: { padding: "1rem", borderRadius: "10px", cursor: "pointer", textAlign: "left", fontSize: "0.95rem", transition: "all 0.15s", lineHeight: "1.4" },
   explanation: { marginTop: "1.25rem", padding: "1rem", background: "#f8f8f8", borderRadius: "10px", fontSize: "0.9rem" },
-  button: { width: "100%", padding: "0.9rem", background: "#4f46e5", color: "white", border: "none", borderRadius: "10px", fontSize: "1rem", fontWeight: "600", cursor: "pointer" }
+  button: { width: "100%", padding: "0.9rem", background: "#4f46e5", color: "white", border: "none", borderRadius: "10px", fontSize: "1rem", fontWeight: "600", cursor: "pointer" },
+  logoutBtn: { fontSize: "0.8rem", color: "#999", background: "none", border: "none", cursor: "pointer", padding: "0" }
 }
