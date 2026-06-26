@@ -1,16 +1,17 @@
 "use client"
 import { useState } from "react"
+import type { CSSProperties } from "react"
 import questions from "../data/questions/air-law/multiple-choice"
 
 export default function Home() {
   const [current, setCurrent] = useState(0)
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState<number | null>(null)
   const [score, setScore] = useState(0)
   const [finished, setFinished] = useState(false)
 
   const q = questions[current]
 
-  function handleAnswer(index) {
+  function handleAnswer(index: number) {
     if (selected !== null) return
     setSelected(index)
     if (index === q.correct) setScore(s => s + 1)
@@ -95,7 +96,7 @@ export default function Home() {
   )
 }
 
-const styles = {
+const styles: Record<string, CSSProperties> = {
   container: { minHeight: "100vh", background: "#f0f2f5", display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" },
   card: { background: "white", borderRadius: "16px", padding: "2rem", maxWidth: "560px", width: "100%", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" },
   topBar: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" },
