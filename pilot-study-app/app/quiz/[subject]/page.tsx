@@ -2,7 +2,29 @@
 import React, { useState, useEffect, useRef } from "react"
 import type { CSSProperties } from "react"
 import { supabase } from "../../../supabase"
-import allQuestions from "../../../data/air-law.json"
+import airLawQuestions from "../../../data/air-law.json"
+import meteorologyQuestions from "../../../data/meteorology.json"
+import { motion, AnimatePresence } from "framer-motion"
+import Loading from "../../components/Loading"
+import agkQuestions from "../../../data/agk.json"
+import flightPerformanceQuestions from "../../../data/flight-performance.json"
+import humanPerformanceQuestions from "../../../data/human-performance.json"
+import navigationQuestions from "../../../data/navigation.json"
+import operationalProceduresQuestions from "../../../data/operational-procedures.json"
+import principlesOfFlightQuestions from "../../../data/principles-of-flight.json"
+import communicationsQuestions from "../../../data/communications.json"
+
+const questionBanks: Record<string, any[]> = {
+  "air-law": airLawQuestions as any[],
+  "meteorology": meteorologyQuestions as any[],
+  "agk": agkQuestions as any[],
+  "flight-performance": flightPerformanceQuestions as any[],
+  "human-performance": humanPerformanceQuestions as any[],
+  "navigation": navigationQuestions as any[],
+  "operational-procedures": operationalProceduresQuestions as any[],
+  "principles-of-flight": principlesOfFlightQuestions as any[],
+  "communications": communicationsQuestions as any[],
+}
 
 type Question = {
   id: string
@@ -47,6 +69,7 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
   const [attempts, setAttempts] = useState<AttemptRecord[]>([])
   const [expandedExplanation, setExpandedExplanation] = useState<number | null>(null)
   const scoreRef = useRef(0)
+  const [authChecked, setAuthChecked] = useState(false)
 
   const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null
   const unitParam = searchParams?.get("unit") || ""
@@ -55,10 +78,12 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUserId(session?.user?.id ?? null)
-    })
+  setUserId(session?.user?.id ?? null)
+  setAuthChecked(true)
+})
 
     const isUnitTest = lessonParam === "6"
+    const allQuestions = questionBanks[subject] || []
     const pool = (allQuestions as Question[]).filter(q => {
       if (q.subject !== subject) return false
       if (isUnitTest) return unitParam ? q.unit === parseInt(unitParam) : true
@@ -112,6 +137,8 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
         question_id: q.id,
         subject: q.subject,
         correct
+      }).then(({ error }) => {
+        if (error) console.error("Progress save error:", error)
       })
     }
   }
@@ -150,7 +177,7 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
   }
 
   function buildBackUrl() {
-    return `/subject/air-law?t=${Date.now()}`
+    return `/subject/${subject}?t=${Date.now()}`
   }
 
   function getAnswerLabel(q: Question, answer: any): string {
@@ -180,7 +207,7 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
       <main style={styles.container}>
         <div style={styles.card}>
           <p style={{ color: "var(--text2)", textAlign: "center" }}>
-            {loading ? "Loading..." : "No questions found for this selection."}
+            {loading ? "Loading" : "No questions found for this selection."}
           </p>
           <button style={{ ...styles.button, marginTop: "1rem" }} onClick={() => window.location.href = "/"}>Back to home</button>
         </div>
@@ -191,6 +218,7 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
   if (finished) {
     const pct = Math.round((scoreRef.current / questions.length) * 100)
     const passed = pct >= 70
+    console.log("Debug:", { userId, authChecked, passed })
 
     return (
       <main style={{ ...styles.container, alignItems: "flex-start", paddingTop: "2rem" }}>
@@ -205,6 +233,36 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
           <p style={{ color: passed ? "#34a853" : "#ea4335", fontWeight: 600, marginBottom: "1.5rem" }}>
             {passed ? `${pct}% — round complete!` : `${pct}% — you need 70% to pass`}
           </p>
+
+          {authChecked && !userId && (
+            <div style={{
+              background: "var(--accent-light)",
+              border: "1px solid var(--accent)",
+              borderRadius: "12px",
+              padding: "1rem",
+              marginBottom: "1rem",
+              textAlign: "center",
+            }}>
+              <p style={{ color: "var(--accent-text)", fontWeight: 600, fontSize: "0.95rem", margin: "0 0 0.5rem" }}>
+                Want to save your progress?
+              </p>
+              <p style={{ color: "var(--accent-text)", fontSize: "0.85rem", margin: "0 0 0.75rem", opacity: 0.8 }}>
+                Create a free account to track your rounds, unlock streaks, and pick up where you left off.
+              </p>
+              <a href="/login" style={{
+                display: "inline-block",
+                background: "var(--accent)",
+                color: "white",
+                padding: "0.6rem 1.5rem",
+                borderRadius: "8px",
+                fontSize: "0.9rem",
+                fontWeight: 600,
+                textDecoration: "none",
+              }}>
+                Sign up free →
+              </a>
+            </div>
+          )}
 
           {passed ? (
             <button style={styles.button} onClick={() => window.location.href = buildBackUrl()}>
@@ -313,10 +371,21 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
                 border = "2px solid var(--accent)"
               }
               return (
-                <button key={i} onClick={() => !submitted && setSelected(i)}
+                <motion.button
+                  key={i}
+                  onClick={() => !submitted && setSelected(i)}
+                  animate={
+                    submitted
+                      ? i === q.correct
+                        ? { scale: [1, 1.03, 1], transition: { duration: 0.3 } }
+                        : i === selected && i !== q.correct
+                        ? { x: [0, -8, 8, -8, 8, 0], transition: { duration: 0.4 } }
+                        : {}
+                      : {}
+                  }
                   style={{ ...styles.option, background: bg, border }}>
                   {option}
-                </button>
+                </motion.button>
               )
             })}
           </div>
@@ -334,10 +403,21 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
                 border = "2px solid var(--accent)"
               }
               return (
-                <button key={String(val)} onClick={() => !submitted && setSelected(val)}
+                <motion.button
+                  key={String(val)}
+                  onClick={() => !submitted && setSelected(val)}
+                  animate={
+                    submitted
+                      ? val === q.correct
+                        ? { scale: [1, 1.03, 1], transition: { duration: 0.3 } }
+                        : val === selected && val !== q.correct
+                        ? { x: [0, -8, 8, -8, 8, 0], transition: { duration: 0.4 } }
+                        : {}
+                      : {}
+                  }
                   style={{ ...styles.option, flex: 1, textAlign: "center", background: bg, border }}>
                   {val ? "True" : "False"}
-                </button>
+                </motion.button>
               )
             })}
           </div>
