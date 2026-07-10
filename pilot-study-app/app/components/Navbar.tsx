@@ -50,8 +50,8 @@ export default function Navbar() {
     position: "sticky",
     top: 0,
     zIndex: 100,
-    overflow: "hidden",
-  }}>
+    flexWrap: "wrap",
+    }}>
     <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
       <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
         <span style={{
@@ -201,7 +201,7 @@ export default function Navbar() {
     {/* Mobile dropdown */}
     {mobileMenuOpen && (
       <div className="mobile-dropdown" style={{
-        display: "none", position: "absolute", top: "64px", left: 0, right: 0,
+        position: "absolute", top: "64px", left: 0, right: 0,
         background: "#1e293b", borderBottom: "1px solid #334155", zIndex: 200, padding: "8px",
       }}>
         {navItems.map(item => (
