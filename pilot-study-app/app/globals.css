@@ -49,4 +49,13 @@ button { cursor: pointer; font-family: inherit; }
   .nav-username {
     display: none !important;
   }
+  .nav-login-desktop {
+    display: none !important;
+  }
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+  .mobile-dropdown {
+    display: block !important;
+  }
 }

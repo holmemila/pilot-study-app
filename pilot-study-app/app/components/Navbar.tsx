@@ -6,6 +6,7 @@ export default function Navbar() {
   const [userEmail, setUserEmail] = useState<string | null>(null)
   const [displayName, setDisplayName] = useState<string | null>(null)
   const [menuOpen, setMenuOpen] = useState<string | null>(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
@@ -155,38 +156,75 @@ export default function Navbar() {
 
     <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
       {userEmail ? (
-        <a href="/settings" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
-          <span className="nav-username" style={{ fontSize: "13px", color: "#64748b" }}>
-            {displayName || userEmail}
-          </span>
-          <div style={{
-            width: "30px",
-            height: "30px",
-            borderRadius: "50%",
-            background: "#f59e0b",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "13px",
-            fontWeight: 800,
-            color: "#0f172a",
-            flexShrink: 0,
-          }}>
-            {(displayName || userEmail || "?")[0].toUpperCase()}
-          </div>
-        </a>
+        <>
+          <a href="/settings" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
+            <span className="nav-username" style={{ fontSize: "13px", color: "#64748b" }}>
+              {displayName || userEmail}
+            </span>
+            <div style={{
+              width: "30px", height: "30px", borderRadius: "50%", background: "#f59e0b",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: "13px", fontWeight: 800, color: "#0f172a", flexShrink: 0,
+            }}>
+              {(displayName || userEmail || "?")[0].toUpperCase()}
+            </div>
+          </a>
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: "6px", flexDirection: "column", gap: "5px" }}
+          >
+            <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
+            <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
+            <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
+          </button>
+        </>
       ) : (
-        <a href="/login" style={{
-          fontSize: "13px",
-          color: "#0f172a",
-          background: "#f59e0b",
-          padding: "6px 14px",
-          borderRadius: "6px",
-          fontWeight: 700,
-          textDecoration: "none",
-        }}>Sign up free</a>
+        <>
+          <a href="/login" style={{
+            fontSize: "13px", color: "#0f172a", background: "#f59e0b",
+            padding: "6px 14px", borderRadius: "6px", fontWeight: 700, textDecoration: "none",
+          }} className="nav-signup">Sign up free</a>
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: "6px", flexDirection: "column", gap: "5px" }}
+          >
+            <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
+            <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
+            <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
+          </button>
+        </>
       )}
     </div>
+
+    {/* Mobile dropdown */}
+    {mobileMenuOpen && (
+      <div className="mobile-dropdown" style={{
+        display: "none", position: "absolute", top: "64px", left: 0, right: 0,
+        background: "#1e293b", borderBottom: "1px solid #334155", zIndex: 200, padding: "8px",
+      }}>
+        {navItems.map(item => (
+          <a key={item.label} href={item.href || "#"}
+            onClick={() => setMobileMenuOpen(false)}
+            style={{ display: "block", padding: "12px 16px", color: "#94a3b8", textDecoration: "none", fontSize: "15px", fontWeight: 500, borderRadius: "8px" }}>
+            {item.label}
+          </a>
+        ))}
+        {userEmail ? (
+          <a href="/settings"
+            onClick={() => setMobileMenuOpen(false)}
+            style={{ display: "block", padding: "12px 16px", color: "#94a3b8", textDecoration: "none", fontSize: "15px", borderRadius: "8px" }}>
+            Settings
+          </a>
+        ) : (
+          <a href="/login"
+            style={{ display: "block", padding: "12px 16px", color: "#f59e0b", textDecoration: "none", fontSize: "15px", fontWeight: 700, borderRadius: "8px" }}>
+            Log in / Sign up
+          </a>
+        )}
+      </div>
+    )}
   </nav>
 )
 }
