@@ -374,6 +374,11 @@ function LandingPage() {
         </p>
         <a href="/login" style={{ background: "#f59e0b", color: "#0f172a", border: "none", borderRadius: "10px", padding: "16px 36px", fontSize: "16px", fontWeight: 700, cursor: "pointer", textDecoration: "none", display: "inline-block" }}>Create your free account →</a>
         <p style={{ color: "#475569", fontSize: "12px", marginTop: "20px" }}>Join hundreds of student pilots studying smarter</p>
+        <p style={{ color: "#334155", fontSize: "12px", marginTop: "12px" }}>
+          <a href="/privacy" style={{ color: "#475569", textDecoration: "none" }}>Privacy Policy</a>
+          {" · "}
+          <a href="mailto:holmemila@gmail.com" style={{ color: "#475569", textDecoration: "none" }}>Contact</a>
+        </p>
       </div>
 
       {/* How it works */}
