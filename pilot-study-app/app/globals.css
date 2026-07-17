@@ -56,3 +56,9 @@ button { cursor: pointer; font-family: inherit; }
     display: flex !important;
   }
 }
+
+@media (max-width: 640px) {
+  .hero-bg {
+    background-attachment: scroll !important;
+  }
+}

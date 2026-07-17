@@ -159,6 +159,17 @@ export default function Settings() {
         </div>
         </div>
 
+        {/* Privacy Policy */}
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "16px", padding: "24px" }}>
+        <h3 style={{ fontWeight: 700, color: "var(--text)", marginBottom: "4px", fontSize: "16px" }}>Legal</h3>
+        <p style={{ color: "var(--text2)", fontSize: "14px", marginBottom: "16px" }}>Read our privacy policy to understand how we handle your data.</p>
+        <div style={{ textAlign: "center" }}>
+            <a href="/privacy" style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "10px 18px", borderRadius: "10px", border: "1px solid var(--border)", background: "var(--surface2)", color: "var(--text)", textDecoration: "none", fontSize: "14px", fontWeight: 600 }}>
+            📄 Privacy Policy
+            </a>
+        </div>
+        </div>
+
         {/* Save */}
         <div style={card}>
           <button onClick={handleSave} disabled={saving} style={{

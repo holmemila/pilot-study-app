@@ -279,35 +279,54 @@ function LandingPage() {
     <div style={{ minHeight: "100vh", background: "#0f172a" }}>
 
       {/* Hero */}
-      <div style={{ padding: "80px 32px 72px", textAlign: "center", maxWidth: "900px", margin: "0 auto" }}>
-        <div style={{ marginBottom: "16px" }}>
-          <span style={{ background: "#10b981", color: "white", fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", letterSpacing: "0.05em" }}>100% FREE</span>
-        </div>
-        <h1 style={{ fontSize: "48px", fontWeight: 800, color: "white", lineHeight: 1.15, marginBottom: "16px", letterSpacing: "-0.02em" }}>
-          Pass your EASA PPL<br /><span style={{ color: "#f59e0b" }}>theory exams.</span>
-        </h1>
-        <p style={{ fontSize: "17px", color: "#94a3b8", maxWidth: "480px", margin: "0 auto 32px", lineHeight: 1.6 }}>
-          The smarter way to study for your Private Pilot Licence. 9 subjects, thousands of questions, built around how pilots actually learn.
-        </p>
-        <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-          <a href="/login" style={{ background: "#f59e0b", color: "#0f172a", border: "none", borderRadius: "10px", padding: "14px 32px", fontSize: "15px", fontWeight: 700, cursor: "pointer", textDecoration: "none", display: "inline-block" }}>Start studying free →</a>
-          <a href="/login" style={{ background: "transparent", color: "#94a3b8", border: "1px solid #334155", borderRadius: "10px", padding: "14px 32px", fontSize: "15px", fontWeight: 600, cursor: "pointer", textDecoration: "none", display: "inline-block" }}>Log in</a>
-        </div>
-        <p style={{ color: "#475569", fontSize: "12px", marginTop: "20px" }}>No credit card · No download · Works on any device</p>
+      <div
+        className="hero-bg"
+        style={{
+          backgroundImage: "url('/hero.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+          position: "relative",
+        }}
+      >
+        {/* Dark overlay */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(15, 23, 42, 0.75)",
+        }} />
 
-        {/* Stats strip */}
-        <div style={{ display: "flex", justifyContent: "center", gap: "48px", marginTop: "56px", paddingTop: "40px", borderTop: "1px solid #1e293b", flexWrap: "wrap" }}>
-          {[
-            { value: "9", label: "EASA subjects" },
-            { value: "2,000+", label: "Unique questions" },
-            { value: "120", label: "Mock exam questions" },
-            { value: "£0", label: "Forever free" },
-          ].map(stat => (
-            <div key={stat.label} style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "30px", fontWeight: 800, color: stat.value === "£0" ? "white" : "#f59e0b" }}>{stat.value}</div>
-              <div style={{ fontSize: "12px", color: "#475569", fontWeight: 600, marginTop: "2px" }}>{stat.label}</div>
-            </div>
-          ))}
+        {/* Content */}
+        <div style={{ position: "relative", zIndex: 1, padding: "80px 32px 72px", textAlign: "center", maxWidth: "900px", margin: "0 auto" }}>
+          <div style={{ marginBottom: "16px" }}>
+            <span style={{ background: "#10b981", color: "white", fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", letterSpacing: "0.05em" }}>100% FREE</span>
+          </div>
+          <h1 style={{ fontSize: "48px", fontWeight: 800, color: "white", lineHeight: 1.15, marginBottom: "16px", letterSpacing: "-0.02em" }}>
+            Pass your EASA PPL<br /><span style={{ color: "#f59e0b" }}>theory exams.</span>
+          </h1>
+          <p style={{ fontSize: "17px", color: "#94a3b8", maxWidth: "480px", margin: "0 auto 32px", lineHeight: 1.6 }}>
+            The smarter way to study for your Private Pilot Licence. 9 subjects, thousands of questions, built around how pilots actually learn.
+          </p>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+            <a href="/login" style={{ background: "#f59e0b", color: "#0f172a", border: "none", borderRadius: "10px", padding: "14px 32px", fontSize: "15px", fontWeight: 700, cursor: "pointer", textDecoration: "none", display: "inline-block" }}>Start studying free →</a>
+            <a href="/login" style={{ background: "transparent", color: "#94a3b8", border: "1px solid #334155", borderRadius: "10px", padding: "14px 32px", fontSize: "15px", fontWeight: 600, cursor: "pointer", textDecoration: "none", display: "inline-block" }}>Log in</a>
+          </div>
+          <p style={{ color: "#475569", fontSize: "12px", marginTop: "20px" }}>No credit card · No download · Works on any device</p>
+
+          {/* Stats strip */}
+          <div style={{ display: "flex", justifyContent: "center", gap: "48px", marginTop: "56px", paddingTop: "40px", borderTop: "1px solid rgba(255,255,255,0.1)", flexWrap: "wrap" }}>
+            {[
+              { value: "9", label: "EASA subjects" },
+              { value: "2,000+", label: "Unique questions" },
+              { value: "120", label: "Mock exam questions" },
+              { value: "£0", label: "Forever free" },
+            ].map(stat => (
+              <div key={stat.label} style={{ textAlign: "center" }}>
+                <div style={{ fontSize: "30px", fontWeight: 800, color: stat.value === "£0" ? "white" : "#f59e0b" }}>{stat.value}</div>
+                <div style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 600, marginTop: "2px" }}>{stat.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -465,6 +484,45 @@ function LandingPage() {
               <p style={{ color: "var(--text2)", fontSize: "14px", lineHeight: 1.6 }}>When you feel ready, sit the full 120-question EASA-format mock exam. Each subject is timed. You need 75% to pass — just like the real thing.</p>
             </div>
 
+          </div>
+        </div>
+      </div>
+
+      {/* About */}
+      <div style={{ background: "#0f172a", padding: "72px 32px" }}>
+        <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "40px" }}>
+            <span style={{ background: "rgba(245,158,11,0.12)", color: "#f59e0b", fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", letterSpacing: "0.05em" }}>ABOUT</span>
+          </div>
+
+          <div style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: "20px", padding: "40px" }}>
+
+            {/* Avatar */}
+            <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "#f59e0b", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px", fontWeight: 900, color: "#0f172a", marginBottom: "24px" }}>E</div>
+
+            <h2 style={{ fontSize: "24px", fontWeight: 800, color: "white", marginBottom: "24px", letterSpacing: "-0.01em" }}>
+              Built by a student pilot,<br />for student pilots.
+            </h2>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <p style={{ color: "#94a3b8", fontSize: "15px", lineHeight: 1.8, margin: 0 }}>
+                Hi, I'm Emil, a student pilot working towards becoming a career pilot. Afer studying for my PPL theory exams I realized how antiquated, old school, and static almost all online studying resources were. So I built Squawk myself to help modernize aviation studying.
+              </p>
+              <p style={{ color: "#94a3b8", fontSize: "15px", lineHeight: 1.8, margin: 0 }}>
+                I wanted to make Squawk free for everyone since I know how expensive flight training can be. Here only ads support me.
+              </p>
+            </div>
+
+            <div style={{ marginTop: "28px", paddingTop: "28px", borderTop: "1px solid #334155", display: "flex", alignItems: "center", gap: "12px" }}>
+              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#f59e0b", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", fontWeight: 900, color: "#0f172a", flexShrink: 0 }}>E</div>
+              <div>
+                <div style={{ color: "white", fontWeight: 700, fontSize: "14px" }}>Emil</div>
+                <div style={{ color: "#64748b", fontSize: "13px" }}>Student pilot · Founder of Squawk</div>
+              </div>
+              <div style={{ marginLeft: "auto" }}>
+                <a href="mailto:holmemila@gmail.com" style={{ color: "#f59e0b", fontSize: "13px", textDecoration: "none", fontWeight: 600 }}>Get in touch →</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
