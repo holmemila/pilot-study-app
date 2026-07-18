@@ -650,7 +650,7 @@ const units = unitsMap[id] || []
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", paddingBottom: "4rem" }}>
-    <div style={{ maxWidth: "520px", margin: "0 auto", padding: "2rem 1rem" }}>
+    <div style={{ maxWidth: "520px", margin: "0 auto", padding: "1rem 1rem" }}>
     </div>
 
   <div style={{ maxWidth: "520px", margin: "0 auto", padding: "2rem 1rem", position: "relative", zIndex: 1 }}>
@@ -824,7 +824,7 @@ function LessonCircle({ lesson, state, roundsDone, isTest = false, onClick }: {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
         <span style={{
-        fontSize: "11px",
+        fontSize: "13px",
         fontWeight: 600,
         color: roundsDone > 0 ? "#f59e0b" : "var(--text2)",
         textAlign: "center",
