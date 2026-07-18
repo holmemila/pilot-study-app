@@ -25,38 +25,125 @@ const questionBanks: Record<string, any[]> = {
   "communications": communicationsQuestions as any[],
 }
 
-function SegmentRing({ completedRounds, total = 3, size = 82 }: { completedRounds: number, total?: number, size?: number }) {
+function KnobCircle({ rounds, completedRounds, size = 80 }: { rounds: number; completedRounds: number; size?: number }) {
   const cx = size / 2
   const cy = size / 2
-  const r = (size / 2) - 5
-  const circumference = 2 * Math.PI * r
-  const gap = 6
-  const segmentLength = (circumference - gap * total) / total
-  
+  const isComplete = completedRounds >= rounds
+  const isStarted = completedRounds > 0
+
+  // -50deg = 1 round done, 0deg = 2 rounds done, +50deg = 3 rounds done, default pointing up (0) when not started
+  const rotation = completedRounds === 0 ? -50 : completedRounds === 1 ? -50 : completedRounds === 2 ? 0 : 50
+
+  const knobR = size * 0.36
+  const pW = size * 0.12  // half width of pointer base
+  const pTip = size * 0.11 // y position of tip (from top)
+  const pMid = size * 0.48 // y where taper begins
+  const pBot = size * 0.72 // y of rounded base
+
+  // Tick line positions — just outside knob circle
+  const tickOuter = cy - knobR - size * 0.03
+  const tickInner = cy - knobR - size * 0.11
+
+  // Number positions — further out from ticks, no overlap
+  const num1x = cx - size * 0.46
+  const num1y = cy - size * 0.35
+  const num2x = cx
+  const num2y = -size * 0.05
+  const num3x = cx + size * 0.45
+  const num3y = cy - size * 0.36
+  const fontSize = size * 0.13
 
   return (
-    <svg width={size} height={size} style={{ position: "absolute", top: 0, left: 0, transform: "rotate(-90deg)" }}>
-      {Array.from({ length: total }).map((_, i) => {
-        const offset = i * (segmentLength + gap)
-        const filled = i < completedRounds
-        return (
-          <motion.circle
-            key={i}
-            cx={cx}
-            cy={cy}
-            r={r}
-            fill="none"
-            stroke={filled ? "#6366f1" : "rgba(99,102,241,0.2)"}
-            strokeWidth={5}
-            strokeDasharray={`${segmentLength} ${circumference - segmentLength}`}
-            strokeDashoffset={-offset}
-            strokeLinecap="round"
-            initial={{ strokeDashoffset: -(offset - segmentLength) }}
-            animate={{ strokeDashoffset: -offset }}
-            transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
-          />
-        )
-      })}
+    <svg width={size} height={size} viewBox={`0 -10 ${size} ${size + 10}`}>
+      <defs>
+        <radialGradient id={`knobBg_${completedRounds}_${size}`} cx="42%" cy="35%" r="65%">
+          <stop offset="0%" stopColor={isComplete ? "#fffbeb" : "#f4f6f8"}/>
+          <stop offset="100%" stopColor={isComplete ? "#fcd34d" : "#b8c2cc"}/>
+        </radialGradient>
+        <radialGradient id={`ptrBg_${completedRounds}_${size}`} cx="50%" cy="10%" r="85%">
+          <stop offset="0%" stopColor={isComplete ? "#fef9c3" : "#eef0f3"}/>
+          <stop offset="40%" stopColor={isComplete ? "#fde68a" : "#d4dce4"}/>
+          <stop offset="100%" stopColor={isComplete ? "#f59e0b" : "#9daab6"}/>
+        </radialGradient>
+        <filter id={`ksh_${size}`}>
+          <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#00000022"/>
+        </filter>
+      </defs>
+
+      {/* Tick 1 — left, -50deg */}
+      <line x1={cx} y1={tickInner} x2={cx} y2={tickOuter}
+        stroke={completedRounds >= 1 ? "#f59e0b" : "#94a3b8"}
+        strokeWidth={size * 0.02} strokeLinecap="round"
+        transform={`rotate(-50 ${cx} ${cy})`}
+      />
+      {/* Number 1 */}
+      <text x={num1x} y={num1y}
+        fontFamily="system-ui,sans-serif" fontSize={fontSize} fontWeight="800"
+        fill={completedRounds >= 1 ? "#f59e0b" : "#94a3b8"}
+        textAnchor="middle" dominantBaseline="middle">1</text>
+
+      {/* Tick 2 — top, 0deg */}
+      <line x1={cx} y1={tickInner} x2={cx} y2={tickOuter}
+        stroke={completedRounds >= 2 ? "#f59e0b" : "#94a3b8"}
+        strokeWidth={size * 0.02} strokeLinecap="round"
+      />
+      {/* Number 2 */}
+      <text x={num2x} y={num2y}
+        fontFamily="system-ui,sans-serif" fontSize={fontSize} fontWeight="800"
+        fill={completedRounds >= 2 ? "#f59e0b" : "#94a3b8"}
+        textAnchor="middle" dominantBaseline="middle">2</text>
+
+      {/* Tick 3 — right, +50deg */}
+      <line x1={cx} y1={tickInner} x2={cx} y2={tickOuter}
+        stroke={completedRounds >= 3 ? "#f59e0b" : "#94a3b8"}
+        strokeWidth={size * 0.02} strokeLinecap="round"
+        transform={`rotate(50 ${cx} ${cy})`}
+      />
+      {/* Number 3 */}
+      <text x={num3x} y={num3y}
+        fontFamily="system-ui,sans-serif" fontSize={fontSize} fontWeight="800"
+        fill={completedRounds >= 3 ? "#f59e0b" : "#94a3b8"}
+        textAnchor="middle" dominantBaseline="middle">3</text>
+
+      {/* Knob circle */}
+      <circle cx={cx} cy={cy} r={knobR}
+        fill={`url(#knobBg_${completedRounds}_${size})`}
+        stroke={isStarted ? "#f59e0b" : "#aab4be"}
+        strokeWidth={isComplete ? 2 : 1.5}
+        filter={`url(#ksh_${size})`}
+      />
+
+      {/* Pointer — rotates based on completedRounds */}
+      <g transform={`rotate(${rotation} ${cx} ${cy})`}>
+        {/* Shadow */}
+        <path
+          d={`M${cx - pW} ${pBot} Q${cx - pW} ${pBot + size * 0.05} ${cx} ${pBot + size * 0.05} Q${cx + pW} ${pBot + size * 0.05} ${cx + pW} ${pBot} L${cx + pW} ${pMid} L${cx + size * 0.045} ${pTip} L${cx - size * 0.045} ${pTip} L${cx - pW} ${pMid} Z`}
+          fill="#00000020"
+          transform="translate(2 6)"
+          style={{ filter: "blur(4px)" }}
+        />
+        {/* Pointer body */}
+        <path
+          d={`M${cx - pW} ${pBot} Q${cx - pW} ${pBot + size * 0.05} ${cx} ${pBot + size * 0.05} Q${cx + pW} ${pBot + size * 0.05} ${cx + pW} ${pBot} L${cx + pW} ${pMid} L${cx + size * 0.045} ${pTip} L${cx - size * 0.045} ${pTip} L${cx - pW} ${pMid} Z`}
+          fill={`url(#ptrBg_${completedRounds}_${size})`}
+          stroke={isComplete ? "#d97706" : "#8a96a2"}
+          strokeWidth="0.8"
+          strokeLinejoin="round"
+        />
+        {/* Black indicator strip */}
+        <path
+          d={`M${cx - size * 0.045} ${pTip + size * 0.01} L${cx - size * 0.045} ${pMid - size * 0.02} L${cx} ${pMid + size * 0.02} L${cx + size * 0.045} ${pMid - size * 0.02} L${cx + size * 0.045} ${pTip + size * 0.01} L${cx} ${pTip} Z`}
+          fill="#1e2530"
+        />
+        {/* White centre line */}
+        <line
+          x1={cx} y1={pTip + size * 0.01}
+          x2={cx} y2={pMid}
+          stroke="white"
+          strokeWidth={size * 0.013}
+          strokeLinecap="round"
+        />
+      </g>
     </svg>
   )
 }
@@ -717,7 +804,7 @@ const units = unitsMap[id] || []
   )
 }
 
-function LessonCircle({ lesson, state, roundsDone, isTest = false, onClick, roundScores, unitId, lessonId }: {
+function LessonCircle({ lesson, state, roundsDone, isTest = false, onClick }: {
   lesson: { name: string, emoji: string }
   state: "done" | "active" | "locked"
   roundsDone: number
@@ -728,67 +815,72 @@ function LessonCircle({ lesson, state, roundsDone, isTest = false, onClick, roun
   lessonId: number
 }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
-      <div style={{ position: "relative", width: "82px", height: "82px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        {!isTest && (
-          <SegmentRing completedRounds={roundsDone} total={3} size={82} />
-        )}
-        {isTest && (
-          <div style={{
-            position: "absolute",
-            top: 0, left: 0,
-            width: "82px",
-            height: "82px",
-            borderRadius: "18px",
-            border: `3px solid ${state === "done" ? "#f59e0b" : state === "active" ? "#f59e0b" : "var(--border)"}`,
-            opacity: state === "locked" ? 0.3 : 1,
-            pointerEvents: "none",
-          }} />
-        )}
-        <button
-          onClick={onClick}
-          style={{
-            width: "68px",
-            height: "68px",
-            borderRadius: isTest ? "14px" : "50%",
-            fontSize: "26px",
-            border: isTest ? `2px solid ${state === "locked" ? "var(--border)" : "#f59e0b"}` : "none",
-            background: isTest ? "#0f172a" : state === "locked" ? "var(--surface2)" : "var(--accent)",
-            cursor: state === "locked" ? "default" : "pointer",
-            opacity: state === "locked" ? 0.35 : 1,
-            transition: "all 0.2s",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            position: "relative",
-            zIndex: 1,
-          }}>
-          {isTest ? (
-            <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
-              <polygon points="18,4 21,14 18,12 15,14" fill="#f59e0b"/>
-              <polygon points="18,32 21,22 18,24 15,22" fill="#475569"/>
-              <polygon points="4,18 14,15 12,18 14,21" fill="#475569"/>
-              <polygon points="32,18 22,15 24,18 22,21" fill="#f59e0b"/>
-              <circle cx="18" cy="18" r="4" fill="none" stroke="#f59e0b" strokeWidth="1.5"/>
-              <circle cx="18" cy="18" r="1.5" fill="#f59e0b"/>
-            </svg>
-          ) : state === "done" ? "✓" : lesson.emoji}
-        </button>
-      </div>
-      <span style={{
-        fontSize: "12px",
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
+        <span style={{
+        fontSize: "11px",
         fontWeight: 600,
-        color: state === "locked" ? "var(--text3)" : state === "done" ? "var(--accent-text)" : "var(--text)",
+        color: roundsDone > 0 ? "#f59e0b" : "var(--text2)",
         textAlign: "center",
-        maxWidth: "80px",
-      }}>
+        maxWidth: "90px",
+        lineHeight: 1.3,
+        }}>
         {lesson.name}
-      </span>
-      {!isTest && (
-        <span style={{ fontSize: "11px", color: "var(--text3)" }}>
-          {roundsDone}/3 rounds
         </span>
-      )}
+        <div onClick={onClick} style={{ cursor: "pointer" }}>
+        {isTest ? (
+            <div style={{
+            width: "64px",
+            height: "64px",
+            borderRadius: "8px",
+            background: roundsDone > 0 ? "#0f172a" : "#f1f5f9",
+            border: `2px solid ${roundsDone > 0 ? "#f59e0b" : "#cbd5e1"}`,
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8)",
+            }}>
+            <div style={{
+                flex: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderBottom: `1px solid ${roundsDone > 0 ? "#f59e0b33" : "#e2e8f0"}`,
+            }}>
+                <span style={{
+                fontFamily: "'Futura', 'Century Gothic', 'Trebuchet MS', sans-serif",
+                fontSize: "8px",
+                fontWeight: 700,
+                color: roundsDone > 0 ? "#f59e0b" : "#94a3b8",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                }}>
+                {roundsDone > 0 ? "COMPLETE" : "UNIT TEST"}
+                </span>
+            </div>
+            <div style={{
+                height: "20px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+            }}>
+                <div style={{
+                width: "32px",
+                height: "8px",
+                borderRadius: "2px",
+                background: roundsDone > 0 ? "#f59e0b" : "#e2e8f0",
+                boxShadow: roundsDone > 0 ? "0 0 6px #f59e0b" : "none",
+                }} />
+            </div>
+            </div>
+        ) : (
+            <KnobCircle rounds={3} completedRounds={roundsDone} size={90} />
+        )}
+        </div>
+        {!isTest && (
+        <span style={{ fontSize: "11px", color: "var(--text3)", marginTop: "-8px" }}>
+            {roundsDone}/3
+        </span>
+        )}
     </div>
   )
 }

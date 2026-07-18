@@ -114,20 +114,6 @@ export default function Settings() {
           <input type="number" value={dailyGoal} onChange={e => setDailyGoal(parseInt(e.target.value) || 0)} min={5} max={200} style={inputStyle} />
         </div>
 
-        {/* Dark mode */}
-        <div style={card}>
-          <div style={sectionTitle}>Appearance</div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div>
-              <p style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text)", margin: 0 }}>Dark mode</p>
-              <p style={{ fontSize: "0.8rem", color: "var(--text2)", margin: "2px 0 0" }}>Switch between light and dark theme</p>
-            </div>
-            <button onClick={toggleDark} style={toggleBtn(dark)}>
-              <span style={toggleKnob(dark)} />
-            </button>
-          </div>
-        </div>
-
         {/* Flashcard preferences */}
         <div style={card}>
           <div style={sectionTitle}>Flashcard question types</div>

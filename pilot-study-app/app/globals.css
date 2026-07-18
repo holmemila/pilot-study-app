@@ -35,7 +35,7 @@
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: "Futura", "Century Gothic", "Trebuchet MS", sans-serif;
   transition: background 0.2s, color 0.2s;
 }
 
