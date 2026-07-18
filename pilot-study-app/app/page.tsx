@@ -596,6 +596,67 @@ function LandingPage() {
         </div>
       </div>
 
+      {/* Footer */}
+      <div style={{ background: "#0d1117", borderTop: "1px solid #1e293b", padding: "48px 32px 32px" }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+
+          {/* Top row */}
+          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: "40px", marginBottom: "48px" }}>
+
+            {/* Brand */}
+            <div>
+              <div style={{ marginBottom: "12px" }}>
+                <span style={{ background: "#f59e0b", color: "#0f172a", fontSize: "11px", fontWeight: 900, padding: "3px 10px", borderRadius: "5px", letterSpacing: "0.06em" }}>SQUAWK</span>
+              </div>
+              <p style={{ color: "#475569", fontSize: "13px", lineHeight: 1.7, maxWidth: "280px", marginTop: "12px" }}>
+                The free, modern way to study for your EASA PPL theory exams. Built by a student pilot, for student pilots.
+              </p>
+              <a href="mailto:holmemila@gmail.com" style={{ display: "inline-block", marginTop: "16px", color: "#64748b", fontSize: "13px", textDecoration: "none" }}>holmemila@gmail.com</a>
+            </div>
+
+            {/* Study */}
+            <div>
+              <div style={{ fontSize: "11px", fontWeight: 700, color: "#334155", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "16px" }}>Study</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {[
+                  { label: "Air Law", href: "/subject/air-law" },
+                  { label: "Meteorology", href: "/subject/meteorology" },
+                  { label: "Navigation", href: "/subject/navigation" },
+                  { label: "All subjects", href: "/login" },
+                ].map(link => (
+                  <a key={link.label} href={link.href} style={{ color: "#475569", fontSize: "13px", textDecoration: "none" }}>{link.label}</a>
+                ))}
+              </div>
+            </div>
+
+            {/* Product */}
+            <div>
+              <div style={{ fontSize: "11px", fontWeight: 700, color: "#334155", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "16px" }}>Products</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {[
+                  { label: "Mock exam", href: "/mock-exam" },
+                  { label: "Logbook", href: "/logbook" },
+                  { label: "Sign up free", href: "/login" },
+                  { label: "Privacy policy", href: "/privacy" },
+                ].map(link => (
+                  <a key={link.label} href={link.href} style={{ color: "#475569", fontSize: "13px", textDecoration: "none" }}>{link.label}</a>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
+          {/* Bottom row */}
+          <div style={{ borderTop: "1px solid #1e293b", paddingTop: "24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
+            <p style={{ color: "#334155", fontSize: "12px" }}>© {new Date().getFullYear()} SquawkPPL. All rights reserved.</p>
+            <div style={{ display: "flex", gap: "20px" }}>
+              <a href="/privacy" style={{ color: "#334155", fontSize: "12px", textDecoration: "none" }}>Privacy policy</a>
+              <a href="mailto:holmemila@gmail.com" style={{ color: "#334155", fontSize: "12px", textDecoration: "none" }}>Contact</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
   )
 }
