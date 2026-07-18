@@ -232,17 +232,17 @@ if (!userId) {
                         <button
                           onClick={e => { e.stopPropagation(); window.location.href = `/subject/${subject.id}` }}
                           style={actionBtn("#0f172a", "#f59e0b")}>
-                          🎯 Study
+                          Study
                         </button>
                         <button
                           onClick={e => { e.stopPropagation(); window.location.href = `/flashcards/${subject.id}` }}
                           style={actionBtn("var(--surface)", "var(--text)")}>
-                          🃏 Flashcards
+                          Flashcards
                         </button>
                         <button
                           onClick={e => { e.stopPropagation(); window.location.href = `/synopsis/${subject.id}` }}
                           style={actionBtn("var(--surface)", "var(--text)")}>
-                          📖 Read
+                          Read
                         </button>
                       </div>
                     </motion.div>
@@ -275,6 +275,54 @@ function actionBtn(bg: string, color: string): React.CSSProperties {
 }
 
 function LandingPage() {
+  useEffect(() => {
+    const steps = [
+      { rotation: -50, title: "Choose your subject", desc: "Pick from all 9 EASA PPL subjects. Each is broken into 5 units with individual lessons — study at your own pace.", amber: [] as number[] },
+      { rotation: 0, title: "Work through lessons", desc: "Each lesson has multiple question rounds — multiple choice, true/false, fill in the blank. Progress tracked automatically as you go.", amber: [1] },
+      { rotation: 50, title: "Take the mock exam", desc: "When you feel ready, sit the full 120-question EASA-format mock exam. Each subject is timed. You need 75% to pass — just like the real thing.", amber: [1, 2] },
+    ]
+    let current = 0
+
+    function update() {
+      const step = steps[current]
+      const ptr = document.getElementById("hw-pointer")
+      const title = document.getElementById("how-step-title")
+      const desc = document.getElementById("how-step-desc")
+      const textWrap = document.getElementById("how-step-text")
+      const knob = document.getElementById("hw-knob")
+      if (!ptr || !title || !desc || !textWrap || !knob) return
+
+      ptr.style.transform = `rotate(${step.rotation}deg)`
+
+      textWrap.style.opacity = "0"
+      setTimeout(() => {
+        title.textContent = step.title
+        desc.textContent = step.desc
+        textWrap.style.opacity = "1"
+      }, 200)
+
+      ;[1, 2, 3].forEach(n => {
+        const tick = document.getElementById(`hw-tick${n}`)
+        const num = document.getElementById(`hw-num${n}`)
+        const lit = step.amber.includes(n)
+        if (tick) { tick.setAttribute("stroke", lit ? "#f59e0b" : "#94a3b8"); tick.setAttribute("stroke-width", lit ? "2.2" : "1.8") }
+        if (num) num.setAttribute("fill", lit ? "#f59e0b" : "#94a3b8")
+      })
+
+      knob.setAttribute("stroke", current > 0 ? "#f59e0b" : "#aab4be")
+
+      ;[0, 1, 2].forEach(i => {
+        const dot = document.getElementById(`hw-dot-${i}`)
+        if (dot) {
+          dot.style.background = i === current ? "#f59e0b" : "#1e293b"
+          dot.style.borderColor = i === current ? "#f59e0b" : "#334155"
+        }
+      })
+    }
+
+    ;(window as any).howDialAdvance = () => { current = (current + 1) % 3; update() }
+    ;(window as any).howDialSetStep = (i: number) => { current = i; update() }
+  }, [])
   return (
     <div style={{ minHeight: "100vh", background: "#0f172a" }}>
 
@@ -335,8 +383,8 @@ function LandingPage() {
         <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "40px" }}>
             <span style={{ background: "rgba(245,158,11,0.12)", color: "#f59e0b", fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", letterSpacing: "0.05em" }}>FEATURES</span>
-            <h2 style={{ fontSize: "28px", fontWeight: 800, color: "var(--text)", marginTop: "12px", letterSpacing: "-0.01em" }}>Everything you need to pass</h2>
-            <p style={{ color: "var(--text2)", marginTop: "8px", fontSize: "15px" }}>Built for EASA PPL students, not just exam cramming</p>
+            <h2 style={{ fontSize: "28px", fontWeight: 800, color: "var(--text)", marginTop: "12px", letterSpacing: "-0.01em" }}>Studying Simplified</h2>
+            <p style={{ color: "var(--text2)", marginTop: "8px", fontSize: "15px" }}>Built for actual learning, with multiple options to choose</p>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px" }}>
@@ -389,7 +437,7 @@ function LandingPage() {
         <span style={{ background: "#10b981", color: "white", fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", letterSpacing: "0.05em" }}>ALWAYS FREE</span>
         <h2 style={{ fontSize: "32px", fontWeight: 800, color: "white", marginTop: "20px", marginBottom: "12px", letterSpacing: "-0.01em" }}>No paywalls. No subscriptions.<br />No catch.</h2>
         <p style={{ color: "#94a3b8", fontSize: "15px", maxWidth: "420px", margin: "0 auto 32px", lineHeight: 1.6 }}>
-          Squawk is free because passing your PPL theory shouldn't depend on your budget. Every feature, every subject, every question completely free.
+          Squawk is free because we know that getting a PPL is already expensive enough, and passing your PPL theory shouldn't depend on your budget.
         </p>
         <a href="/login" style={{ background: "#f59e0b", color: "#0f172a", border: "none", borderRadius: "10px", padding: "16px 36px", fontSize: "16px", fontWeight: 700, cursor: "pointer", textDecoration: "none", display: "inline-block" }}>Create your free account →</a>
         <p style={{ color: "#475569", fontSize: "12px", marginTop: "20px" }}>Join hundreds of student pilots studying smarter</p>
@@ -402,88 +450,66 @@ function LandingPage() {
 
       {/* How it works */}
       <div style={{ background: "var(--bg)", padding: "72px 32px" }}>
-        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "48px" }}>
-            <span style={{ background: "rgba(245,158,11,0.12)", color: "#f59e0b", fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", letterSpacing: "0.05em" }}>HOW IT WORKS</span>
-            <h2 style={{ fontSize: "28px", fontWeight: 800, color: "var(--text)", marginTop: "12px", letterSpacing: "-0.01em" }}>Three steps to your theory pass</h2>
+        <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
+          <span style={{ background: "rgba(245,158,11,0.12)", color: "#f59e0b", fontSize: "11px", fontWeight: 700, padding: "4px 12px", borderRadius: "20px", letterSpacing: "0.05em" }}>HOW IT WORKS</span>
+          <h2 style={{ fontSize: "28px", fontWeight: 800, color: "var(--text)", marginTop: "12px", marginBottom: "8px", letterSpacing: "-0.01em" }}>Three steps to your theory pass</h2>
+          <p style={{ color: "var(--text2)", fontSize: "14px", marginBottom: "40px" }}>Click the dial to advance</p>
+
+          <div id="how-step-text" style={{ minHeight: "80px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px", marginBottom: "32px", transition: "opacity 0.3s ease" }}>
+            <div id="how-step-title" style={{ fontSize: "20px", fontWeight: 800, color: "var(--text)", letterSpacing: "-0.01em" }}>Choose your subject</div>
+            <div id="how-step-desc" style={{ fontSize: "14px", color: "var(--text2)", maxWidth: "400px", lineHeight: 1.6 }}>Pick from all 9 EASA PPL subjects. Each is broken into 5 units with individual lessons — study at your own pace.</div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "32px", alignItems: "start" }}>
+          {/* Dial */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px" }}>
+            <svg id="how-dial" onClick={() => {
+              if (typeof window !== "undefined") {
+                const w = window as any
+                if (w.howDialAdvance) w.howDialAdvance()
+              }
+            }} style={{ cursor: "pointer", filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.4))", width: "200px", height: "220px" }} viewBox="-20 -26 140 150">
+              <defs>
+                <radialGradient id="hw-knobBg" cx="42%" cy="35%" r="65%">
+                  <stop offset="0%" stopColor="#f4f6f8"/>
+                  <stop offset="100%" stopColor="#b8c2cc"/>
+                </radialGradient>
+                <radialGradient id="hw-ptrBg" cx="50%" cy="10%" r="85%">
+                  <stop offset="0%" stopColor="#eef0f3"/>
+                  <stop offset="40%" stopColor="#d4dce4"/>
+                  <stop offset="100%" stopColor="#9daab6"/>
+                </radialGradient>
+                <filter id="hw-ksh">
+                  <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#00000030"/>
+                </filter>
+              </defs>
+              <line x1="50" y1="5" x2="50" y2="14" id="hw-tick1" stroke="#94a3b8" strokeWidth="1.8" strokeLinecap="round" transform="rotate(-50 50 55)"/>
+              <text x="5" y="22" id="hw-num1" fontFamily="system-ui" fontSize="12" fontWeight="800" fill="#94a3b8" textAnchor="middle">1</text>
+              <line x1="50" y1="5" x2="50" y2="14" id="hw-tick2" stroke="#94a3b8" strokeWidth="1.8" strokeLinecap="round"/>
+              <text x="50" y="2" id="hw-num2" fontFamily="system-ui" fontSize="12" fontWeight="800" fill="#94a3b8" textAnchor="middle">2</text>
+              <line x1="50" y1="5" x2="50" y2="14" id="hw-tick3" stroke="#94a3b8" strokeWidth="1.8" strokeLinecap="round" transform="rotate(50 50 55)"/>
+              <text x="95" y="22" id="hw-num3" fontFamily="system-ui" fontSize="12" fontWeight="800" fill="#94a3b8" textAnchor="middle">3</text>
+              <circle id="hw-knob" cx="50" cy="55" r="34" fill="url(#hw-knobBg)" stroke="#aab4be" strokeWidth="1.5" filter="url(#hw-ksh)"/>
+              <g id="hw-pointer" style={{ transformOrigin: "50px 55px", transform: "rotate(-50deg)", transition: "transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+                <path d="M40,77 Q40,83 50,83 Q60,83 60,77 L60,43 L50,17 L40,43 Z" fill="#00000020" transform="translate(2 5)" style={{ filter: "blur(4px)" }}/>
+                <path d="M40,77 Q40,83 50,83 Q60,83 60,77 L60,43 L50,17 L40,43 Z" fill="url(#hw-ptrBg)" stroke="#8a96a2" strokeWidth="0.8" strokeLinejoin="round"/>
+                <path d="M46,21 L46,46 L50,50 L54,46 L54,21 L50,17 Z" fill="#1e2530"/>
+                <line x1="50" y1="19" x2="50" y2="48" stroke="white" strokeWidth="1.2" strokeLinecap="round"/>
+              </g>
+            </svg>
 
-            {/* Step 1 */}
-            <div style={{ textAlign: "center" }}>
-              <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#f59e0b", color: "#0f172a", fontWeight: 800, fontSize: "20px", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>1</div>
-              <h3 style={{ fontWeight: 700, color: "var(--text)", fontSize: "17px", marginBottom: "8px" }}>Choose your subject</h3>
-              <p style={{ color: "var(--text2)", fontSize: "14px", lineHeight: 1.6, marginBottom: "20px" }}>Pick from all 9 EASA PPL subjects. Each is broken into 5 units with individual lessons so you can study at your own pace.</p>
+            {/* Dots */}
+            <div style={{ display: "flex", gap: "8px", justifyContent: "center" }}>
+              {[0, 1, 2].map(i => (
+                <div key={i} id={`hw-dot-${i}`} onClick={() => {
+                  if (typeof window !== "undefined") {
+                    const w = window as any
+                    if (w.howDialSetStep) w.howDialSetStep(i)
+                  }
+                }} style={{ width: "8px", height: "8px", borderRadius: "50%", background: i === 0 ? "#f59e0b" : "#1e293b", border: `1.5px solid ${i === 0 ? "#f59e0b" : "#334155"}`, cursor: "pointer", transition: "all 0.3s" }} />
+              ))}
             </div>
 
-            {/* Step 2 — fake subject preview */}
-            <div style={{ textAlign: "center" }}>
-              <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#334155", color: "#94a3b8", fontWeight: 800, fontSize: "20px", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>2</div>
-              <h3 style={{ fontWeight: 700, color: "var(--text)", fontSize: "17px", marginBottom: "8px" }}>Work through lessons</h3>
-              <p style={{ color: "var(--text2)", fontSize: "14px", lineHeight: 1.6, marginBottom: "20px" }}>Each lesson has multiple question rounds of multiple choice, true/false, fill in the blank. Earn completion rings as you progress.</p>
-
-              {/* Fake subject page snippet */}
-              <div style={{ background: "#0f172a", borderRadius: "14px", padding: "20px", textAlign: "left" }}>
-                <div style={{ fontSize: "11px", fontWeight: 700, color: "#475569", letterSpacing: "0.08em", marginBottom: "16px" }}>UNIT 1 — AEROFOIL THEORY</div>
-
-                {/* Row 1 — 2 circles */}
-                <div style={{ display: "flex", justifyContent: "center", gap: "32px", marginBottom: "16px" }}>
-
-                  {/* Lesson 1 — completed */}
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
-                    <div style={{ position: "relative", width: "52px", height: "52px" }}>
-                      <svg width="52" height="52" viewBox="0 0 52 52">
-                        <circle cx="26" cy="26" r="22" fill="none" stroke="#1e293b" strokeWidth="3"/>
-                        <circle cx="26" cy="26" r="22" fill="none" stroke="#f59e0b" strokeWidth="3" strokeDasharray="138" strokeDashoffset="0" strokeLinecap="round" transform="rotate(-90 26 26)"/>
-                      </svg>
-                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>✈️</div>
-                    </div>
-                    <div style={{ fontSize: "9px", color: "#f59e0b", fontWeight: 600, textAlign: "center", maxWidth: "56px", lineHeight: 1.3 }}>Aerofoil shape</div>
-                  </div>
-
-                  {/* Lesson 2 — 1/3 complete */}
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
-                    <div style={{ position: "relative", width: "52px", height: "52px" }}>
-                      <svg width="52" height="52" viewBox="0 0 52 52">
-                        <circle cx="26" cy="26" r="22" fill="none" stroke="#1e293b" strokeWidth="3"/>
-                        <circle cx="26" cy="26" r="22" fill="none" stroke="#f59e0b" strokeWidth="3" strokeDasharray="138" strokeDashoffset="92" strokeLinecap="round" transform="rotate(-90 26 26)"/>
-                      </svg>
-                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: 700, color: "#94a3b8" }}>📐</div>
-                    </div>
-                    <div style={{ fontSize: "9px", color: "#94a3b8", fontWeight: 600, textAlign: "center", maxWidth: "56px", lineHeight: 1.3 }}>Angle of attack</div>
-                  </div>
-
-                </div>
-
-                {/* Row 2 — 1 circle centered */}
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: "16px" }}>
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
-                    <div style={{ position: "relative", width: "52px", height: "52px" }}>
-                      <svg width="52" height="52" viewBox="0 0 52 52">
-                        <circle cx="26" cy="26" r="22" fill="none" stroke="#1e293b" strokeWidth="3"/>
-                      </svg>
-                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", opacity: 0.3 }}>💨</div>
-                    </div>
-                    <div style={{ fontSize: "9px", color: "#475569", fontWeight: 600, textAlign: "center", maxWidth: "56px", lineHeight: 1.3 }}>Drag types</div>
-                  </div>
-                </div>
-
-                {/* Unit test */}
-                <div style={{ borderTop: "1px solid #1e293b", paddingTop: "12px", display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
-                  <div style={{ width: "44px", height: "44px", borderRadius: "8px", border: "2px solid #334155", background: "#1e293b", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>🧭</div>
-                  <div style={{ fontSize: "9px", color: "#475569", fontWeight: 600, letterSpacing: "0.06em" }}>UNIT TEST</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div style={{ textAlign: "center" }}>
-              <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#064e3b", border: "2px solid #10b981", color: "#10b981", fontWeight: 800, fontSize: "20px", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>3</div>
-              <h3 style={{ fontWeight: 700, color: "var(--text)", fontSize: "17px", marginBottom: "8px" }}>Take the mock exam</h3>
-              <p style={{ color: "var(--text2)", fontSize: "14px", lineHeight: 1.6 }}>When you feel ready, sit the full 120-question EASA-format mock exam. Each subject is timed. You need 75% to pass — just like the real thing.</p>
-            </div>
-
+            <p style={{ fontSize: "12px", color: "#334155", letterSpacing: "0.04em" }}>CLICK DIAL TO ADVANCE</p>
           </div>
         </div>
       </div>
@@ -498,7 +524,6 @@ function LandingPage() {
           <div style={{ background: "#1e293b", border: "1px solid #334155", borderRadius: "20px", padding: "40px" }}>
 
             {/* Avatar */}
-            <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "#f59e0b", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px", fontWeight: 900, color: "#0f172a", marginBottom: "24px" }}>E</div>
 
             <h2 style={{ fontSize: "24px", fontWeight: 800, color: "white", marginBottom: "24px", letterSpacing: "-0.01em" }}>
               Built by a student pilot,<br />for student pilots.
@@ -509,7 +534,7 @@ function LandingPage() {
                 Hi, I'm Emil, a student pilot working towards becoming a career pilot. Afer studying for my PPL theory exams I realized how antiquated, old school, and static almost all online studying resources were. So I built Squawk myself to help modernize aviation studying.
               </p>
               <p style={{ color: "#94a3b8", fontSize: "15px", lineHeight: 1.8, margin: 0 }}>
-                I wanted to make Squawk free for everyone since I know how expensive flight training can be. Here only ads support me.
+                I wanted to make Squawk free for everyone since I know how expensive flight training can be. Here only ads support me and this site, I just want it to help some future pilots out there.
               </p>
             </div>
 

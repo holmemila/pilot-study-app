@@ -650,7 +650,10 @@ const units = unitsMap[id] || []
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", paddingBottom: "4rem" }}>
-      <div style={{ maxWidth: "520px", margin: "0 auto", padding: "2rem 1rem" }}>
+    <div style={{ maxWidth: "520px", margin: "0 auto", padding: "2rem 1rem" }}>
+    </div>
+
+  <div style={{ maxWidth: "520px", margin: "0 auto", padding: "2rem 1rem", position: "relative", zIndex: 1 }}>
 
         <button onClick={() => window.location.href = "/"} style={{ background: "none", border: "none", color: "var(--text2)", fontSize: "14px", marginBottom: "1.5rem", padding: 0, cursor: "pointer" }}>
           ← All subjects
@@ -675,11 +678,15 @@ const units = unitsMap[id] || []
 
           return (
             <div key={unit.id} style={{ marginBottom: "2.5rem" }}>
-              <div style={{ textAlign: "center", color: "var(--text3)", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "1.25rem" }}>
-                Unit {unit.id} — {unit.name}
-              </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1.25rem" }}>
+                <div style={{ flex: 1, height: "1px", background: "var(--border)" }} />
+                <div style={{ color: "var(--text3)", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
+                    Unit {unit.id} — {unit.name}
+                </div>
+                <div style={{ flex: 1, height: "1px", background: "var(--border)" }} />
+                </div>
 
-              {!hasQuestionsForUnit ? (
+                {!hasQuestionsForUnit ? (
                 <div style={{ background: "var(--surface)", borderRadius: "20px", border: "1px solid var(--border)", padding: "2rem 1.5rem", textAlign: "center" }}>
                   <span style={{ fontSize: "11px", color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>Coming soon</span>
                 </div>
