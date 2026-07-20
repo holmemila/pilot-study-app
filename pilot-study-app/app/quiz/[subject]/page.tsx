@@ -357,7 +357,22 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
           </span>
         </div>
 
-        <h2 style={styles.question}>{q.question}</h2>
+        {(q as any).image && (
+        <img
+          src={(q as any).image}
+          alt="Question diagram"
+          style={{
+            width: "100%",
+            maxWidth: "480px",
+            borderRadius: "12px",
+            marginBottom: "16px",
+            border: "1px solid var(--border)",
+            display: "block",
+            margin: "0 auto 16px",
+          }}
+        />
+      )}
+      <h2 style={styles.question}>{q.question}</h2>
 
         {q.type === "multiple-choice" && (
           <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>

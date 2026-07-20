@@ -62,3 +62,18 @@ button { cursor: pointer; font-family: inherit; }
     background-attachment: scroll !important;
   }
 }
+
+.synopsis-sidebar {
+  display: block;
+}
+.synopsis-mobile-menu {
+  display: none;
+}
+@media (max-width: 768px) {
+  .synopsis-sidebar {
+    display: none;
+  }
+  .synopsis-mobile-menu {
+    display: block;
+  }
+}
