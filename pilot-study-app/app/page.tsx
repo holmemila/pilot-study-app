@@ -5,6 +5,7 @@ import { supabase } from "../supabase"
 import Loading from "./components/Loading"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { getGuestRoundCompletions, getGuestProgress } from "./lib/guestStorage"
 
 const allSubjects = [
   { id: "air-law", name: "Air Law", num: "01", available: true },
@@ -28,6 +29,7 @@ export default function Home() {
   const [subjectProgress, setSubjectProgress] = useState<Record<string, number>>({})
   const [expandedSubject, setExpandedSubject] = useState<string | null>(null)
   const router = useRouter()
+  const [showLanding, setShowLanding] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
@@ -48,10 +50,10 @@ export default function Home() {
 
         try {
           const { data: progress } = await supabase
-          .from("progress")
-          .select("subject, answered_at, question_id")
-          .eq("user_id", session.user.id)
-          .gte("answered_at", weekAgo.toISOString())
+            .from("progress")
+            .select("subject, answered_at, question_id")
+            .eq("user_id", session.user.id)
+            .gte("answered_at", weekAgo.toISOString())
 
           if (progress) {
             const flashcards = progress.filter((p: any) => p.question_id?.startsWith("flashcard-"))
@@ -82,10 +84,42 @@ export default function Home() {
             setSubjectProgress(pct)
           }
         } catch {}
+      } else {
+        // Guest — read progress from localStorage instead
+        const weekAgo = new Date()
+        weekAgo.setUTCDate(weekAgo.getUTCDate() - 7)
+
+        const guestProgress = getGuestProgress().filter(p => new Date(p.answered_at) >= weekAgo)
+        const flashcards = guestProgress.filter(p => p.question_id?.startsWith("flashcard-"))
+        const questions = guestProgress.filter(p => !p.question_id?.startsWith("flashcard-"))
+        setQuestionsThisWeek(questions.length)
+        setFlashcardsThisWeek(flashcards.length)
+
+        const guestRounds = getGuestRoundCompletions()
+        const lessonMap: Record<string, Set<number>> = {}
+        guestRounds.forEach(r => {
+          if (!lessonMap[r.subject]) lessonMap[r.subject] = new Set()
+          lessonMap[r.subject].add(r.lesson_id)
+        })
+        const pct: Record<string, number> = {}
+        Object.entries(lessonMap).forEach(([subject, lessons]) => {
+          pct[subject] = Math.round((lessons.size / 15) * 100)
+        })
+        setSubjectProgress(pct)
       }
       setLoading(false)
     }) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("t") : ""])
+
+  useEffect(() => {
+  if (!loading && !userId) {
+    const seen = sessionStorage.getItem("squawk_seen_landing")
+    if (!seen) {
+      setShowLanding(true)
+      sessionStorage.setItem("squawk_seen_landing", "true")
+    }
+  }
+}, [loading, userId])
 
   function handleCardClick(subjectId: string, available: boolean) {
     if (!available) return
@@ -96,8 +130,8 @@ export default function Home() {
   return <Loading />
 }
 
-if (!userId) {
-  return <LandingPage />
+if (!userId && showLanding) {
+  return <LandingPage onContinue={() => setShowLanding(false)} />
 }
 
   return (
@@ -274,7 +308,7 @@ function actionBtn(bg: string, color: string): React.CSSProperties {
   }
 }
 
-function LandingPage() {
+function LandingPage({ onContinue }: { onContinue: () => void }) {
   useEffect(() => {
     const steps = [
       { rotation: -50, title: "Choose your subject", desc: "Pick from all 9 EASA PPL subjects. Each is broken into 5 units with individual lessons — study at your own pace.", amber: [] as number[] },
@@ -356,9 +390,12 @@ function LandingPage() {
             The smarter way to study for your Private Pilot Licence. 9 subjects, thousands of questions, built around how pilots actually learn.
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-            <a href="/login" style={{ background: "#f59e0b", color: "#0f172a", border: "none", borderRadius: "10px", padding: "14px 32px", fontSize: "15px", fontWeight: 700, cursor: "pointer", textDecoration: "none", display: "inline-block" }}>Start studying free →</a>
+            <a href="/login" style={{ background: "#f59e0b", color: "#0f172a", border: "none", borderRadius: "10px", padding: "14px 32px", fontSize: "15px", fontWeight: 700, cursor: "pointer", textDecoration: "none", display: "inline-block" }}>Sign up free →</a>
             <a href="/login" style={{ background: "transparent", color: "#94a3b8", border: "1px solid #334155", borderRadius: "10px", padding: "14px 32px", fontSize: "15px", fontWeight: 600, cursor: "pointer", textDecoration: "none", display: "inline-block" }}>Log in</a>
           </div>
+          <button onClick={onContinue} style={{ background: "none", border: "none", color: "#64748b", fontSize: "14px", fontWeight: 600, cursor: "pointer", marginTop: "16px", textDecoration: "underline" }}>
+            Continue without an account →
+          </button>
           <p style={{ color: "#475569", fontSize: "12px", marginTop: "20px" }}>No credit card · No download · Works on any device</p>
 
           {/* Stats strip */}

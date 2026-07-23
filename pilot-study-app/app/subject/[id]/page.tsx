@@ -12,6 +12,7 @@ import navigationQuestions from "../../../data/navigation.json"
 import operationalProceduresQuestions from "../../../data/operational-procedures.json"
 import principlesOfFlightQuestions from "../../../data/principles-of-flight.json"
 import communicationsQuestions from "../../../data/communications.json"
+import { getGuestRoundCompletions } from "../../lib/guestStorage"
 
 const questionBanks: Record<string, any[]> = {
   "air-law": airLawQuestions,
@@ -154,47 +155,49 @@ export default function SubjectPage({ params }: { params: Promise<{ id: string }
   const unitsMap: Record<string, any[]> = {
   "air-law": [
     {
-      id: 1, name: "Licences & Medical",
-      lessons: [
-        { id: 1, name: "PPL Basics", emoji: "⚖️" },
-        { id: 2, name: "Medical", emoji: "🏥" },
+        id: 1, name: "International Law & Regulatory Framework",
+        lessons: [
+        { id: 1, name: "ICAO", emoji: "🌍" },
+        { id: 2, name: "EASA", emoji: "🏛️" },
+        { id: 3, name: "Documentation", emoji: "📄" },
+        ],
+        testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
+    },
+    {
+        id: 2, name: "Licences, Medical & Currency",
+        lessons: [
+        { id: 1, name: "PPL Requirements & Privileges", emoji: "🎓" },
+        { id: 2, name: "Medicals", emoji: "🏥" },
         { id: 3, name: "Ratings", emoji: "📋" },
-      ],
-      testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
+        ],
+        testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
     },
     {
-      id: 2, name: "Airspace & Rules",
-      lessons: [
-        { id: 1, name: "Right of way", emoji: "🔄" },
+        id: 3, name: "Rules of the Air",
+        lessons: [
+        { id: 1, name: "Flight Rules", emoji: "🔄" },
         { id: 2, name: "VFR Minima", emoji: "👁️" },
-        { id: 3, name: "Airspace Classes", emoji: "🗺️" },
-      ],
-      testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
+        { id: 3, name: "Visual", emoji: "💡" },
+        ],
+        testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
     },
     {
-      id: 3, name: "Signals & Comms",
-      lessons: [
-        { id: 1, name: "Light Signals", emoji: "💡" },
-        { id: 2, name: "Transponder", emoji: "🔢" },
-        { id: 3, name: "MAYDAY & PAN PAN", emoji: "📻" },
-      ],
-      testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
+        id: 4, name: "Airspace & Aerodromes",
+        lessons: [
+        { id: 1, name: "Airspace Classification", emoji: "🗺️" },
+        { id: 2, name: "Aerodrome Ops", emoji: "🛬" },
+        { id: 3, name: "Special Rules Airspace", emoji: "⚠️" },
+        ],
+        testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
     },
     {
-      id: 4, name: "Docs & Regs",
-      lessons: [
-        { id: 1, name: "Documents", emoji: "📄" },
-        { id: 2, name: "Fitness & Alcohol", emoji: "👨‍✈️" },
-        { id: 3, name: "Regulations", emoji: "📋" },
-      ],
-      testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
-    },
-    {
-      id: 5, name: "Full Review",
-      lessons: [
-        { id: 1, name: "Mixed review", emoji: "🎯" },
-      ],
-      testLesson: { id: 6, name: "Final Test", emoji: "🏆" }
+        id: 5, name: "Documents, Regulations & Emergencies",
+        lessons: [
+        { id: 1, name: "Aircraft Documents", emoji: "📑" },
+        { id: 2, name: "Personal Limitations", emoji: "👨‍✈️" },
+        { id: 3, name: "Distress", emoji: "🆘" },
+        ],
+        testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
     },
   ],
   "meteorology": [
@@ -605,28 +608,35 @@ const units = unitsMap[id] || []
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (!session) { setLoaded(true); return }
+        const rounds: Record<string, number> = {}
+        const done = new Set<string>()
 
-      const { data } = await supabase
-        .from("round_completions")
-        .select("unit_id, lesson_id, round_id")
-        .eq("user_id", session.user.id)
-        .eq("subject", id)
+        if (session) {
+        const { data } = await supabase
+            .from("round_completions")
+            .select("unit_id, lesson_id, round_id")
+            .eq("user_id", session.user.id)
+            .eq("subject", id)
 
-      const rounds: Record<string, number> = {}
-      const done = new Set<string>()
+        ;(data || []).forEach((row: any) => {
+            const key = `${row.unit_id}-${row.lesson_id}`
+            rounds[key] = (rounds[key] || 0) + 1
+            if (rounds[key] >= 3) done.add(key)
+        })
+        } else {
+        const guestRounds = getGuestRoundCompletions().filter(r => r.subject === id)
+        guestRounds.forEach(row => {
+            const key = `${row.unit_id}-${row.lesson_id}`
+            rounds[key] = (rounds[key] || 0) + 1
+            if (rounds[key] >= 3) done.add(key)
+        })
+        }
 
-      ;(data || []).forEach((row: any) => {
-        const key = `${row.unit_id}-${row.lesson_id}`
-        rounds[key] = (rounds[key] || 0) + 1
-        if (rounds[key] >= 3) done.add(key)
-      })
-
-      setRoundsCompleted(rounds)
-      setLessonsCompleted(done)
-      setLoaded(true)
+        setRoundsCompleted(rounds)
+        setLessonsCompleted(done)
+        setLoaded(true)
     })
-  }, [])
+    }, [])
 
   function getLessonState(unitId: number, lessonId: number): "done" | "active" | "locked" {
     const key = `${unitId}-${lessonId}`

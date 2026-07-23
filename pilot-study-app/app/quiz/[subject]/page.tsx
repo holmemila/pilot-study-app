@@ -13,6 +13,7 @@ import navigationQuestions from "../../../data/navigation.json"
 import operationalProceduresQuestions from "../../../data/operational-procedures.json"
 import principlesOfFlightQuestions from "../../../data/principles-of-flight.json"
 import communicationsQuestions from "../../../data/communications.json"
+import { saveGuestRoundCompletion, saveGuestProgress } from "../../lib/guestStorage"
 
 const questionBanks: Record<string, any[]> = {
   "air-law": airLawQuestions as any[],
@@ -131,15 +132,19 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
       userAnswer: q.type === "select-all" ? [...selectAll] : selected,
       correct
     }])
-    if (userId && q) {
-      supabase.from("progress").insert({
-        user_id: userId,
-        question_id: q.id,
-        subject: q.subject,
-        correct
-      }).then(({ error }) => {
-        if (error) console.error("Progress save error:", error)
-      })
+    if (q) {
+      if (userId) {
+        supabase.from("progress").insert({
+          user_id: userId,
+          question_id: q.id,
+          subject: q.subject,
+          correct
+        }).then(({ error }) => {
+          if (error) console.error("Progress save error:", error)
+        })
+      } else {
+        saveGuestProgress({ question_id: q.id, subject: q.subject, correct })
+      }
     }
   }
 
@@ -149,16 +154,27 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
       const finalTotal = questions.length
       const passed = finalScore / finalTotal >= 0.7
 
-      if (passed && userId && unitParam && lessonParam && roundParam) {
-        await supabase.from("round_completions").upsert({
-          user_id: userId,
-          subject: subject,
-          unit_id: parseInt(unitParam),
-          lesson_id: parseInt(lessonParam),
-          round_id: parseInt(roundParam),
-          score: finalScore,
-          total: finalTotal,
-        }, { onConflict: "user_id,subject,unit_id,lesson_id,round_id" })
+      if (passed && unitParam && lessonParam && roundParam) {
+        if (userId) {
+          await supabase.from("round_completions").upsert({
+            user_id: userId,
+            subject: subject,
+            unit_id: parseInt(unitParam),
+            lesson_id: parseInt(lessonParam),
+            round_id: parseInt(roundParam),
+            score: finalScore,
+            total: finalTotal,
+          }, { onConflict: "user_id,subject,unit_id,lesson_id,round_id" })
+        } else {
+          saveGuestRoundCompletion({
+            subject: subject,
+            unit_id: parseInt(unitParam),
+            lesson_id: parseInt(lessonParam),
+            round_id: parseInt(roundParam),
+            score: finalScore,
+            total: finalTotal,
+          })
+        }
       }
       setFinished(true)
     } else {
@@ -244,10 +260,10 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
               textAlign: "center",
             }}>
               <p style={{ color: "var(--accent-text)", fontWeight: 600, fontSize: "0.95rem", margin: "0 0 0.5rem" }}>
-                Want to save your progress?
+                Your progress is saved on this device
               </p>
               <p style={{ color: "var(--accent-text)", fontSize: "0.85rem", margin: "0 0 0.75rem", opacity: 0.8 }}>
-                Create a free account to track your rounds, unlock streaks, and pick up where you left off.
+                Create a free account to sync your progress across devices and never lose it if you clear your browser.
               </p>
               <a href="/login" style={{
                 display: "inline-block",
