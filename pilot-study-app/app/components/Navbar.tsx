@@ -54,15 +54,7 @@ export default function Navbar() {
     }}>
     <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
       <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-        <span style={{
-          background: "#f59e0b",
-          color: "#0f172a",
-          fontSize: "11px",
-          fontWeight: 900,
-          padding: "3px 10px",
-          borderRadius: "5px",
-          letterSpacing: "0.06em",
-        }}>SQUAWK</span>
+        <img src="/logo.png" alt="Squawk" style={{ height: "56px", width: "auto" }} />
       </a>
       <div style={{
         display: "flex",
@@ -155,47 +147,103 @@ export default function Navbar() {
     </div>
 
     <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
-      {userEmail ? (
+        {userEmail ? (
+            <>
+                <a
+                href="https://buymeacoffee.com/squawkstudy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bmc-btn"
+                style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                fontSize: "12px",
+                fontWeight: 700,
+                color: "#0f172a",
+                background: "#FFDD00",
+                padding: "5px 12px",
+                borderRadius: "6px",
+                textDecoration: "none",
+                flexShrink: 0,
+                }}
+            >
+                <svg width="24" height="24" viewBox="0 0 140 140" fill="none">
+                    <path d="M62 30 Q65 24 62 18" stroke="#0f172a" strokeWidth="4" strokeLinecap="round"/>
+                    <path d="M82 30 Q85 24 82 18" stroke="#0f172a" strokeWidth="4" strokeLinecap="round"/>
+                    <rect x="38" y="40" width="64" height="16" rx="6" fill="none" stroke="#0f172a" strokeWidth="6"/>
+                    <path d="M42 56 L48 106 Q49 114 57 114 L83 114 Q91 114 92 106 L98 56 Z" fill="none" stroke="#0f172a" strokeWidth="6" strokeLinejoin="round"/>
+                    <path d="M52 70 Q70 64 88 70 L85 102 Q84.5 106 80 106 L60 106 Q55.5 106 55 102 Z" fill="#0f172a"/>
+                </svg>
+                Buy me a coffee
+            </a>
+            <a href="/settings" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
+                <span className="nav-username" style={{ fontSize: "13px", color: "#64748b" }}>
+                {displayName || userEmail}
+                </span>
+                <div style={{
+                width: "30px", height: "30px", borderRadius: "50%", background: "#f59e0b",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: "13px", fontWeight: 800, color: "#0f172a", flexShrink: 0,
+                }}>
+                {(displayName || userEmail || "?")[0].toUpperCase()}
+                </div>
+            </a>
+            <button
+                className="mobile-menu-btn"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: "6px", flexDirection: "column", gap: "5px" }}
+            >
+                <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
+                <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
+                <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
+            </button>
+            </>
+        ) : (
         <>
-          <a href="/settings" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
-            <span className="nav-username" style={{ fontSize: "13px", color: "#64748b" }}>
-              {displayName || userEmail}
-            </span>
-            <div style={{
-              width: "30px", height: "30px", borderRadius: "50%", background: "#f59e0b",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: "13px", fontWeight: 800, color: "#0f172a", flexShrink: 0,
-            }}>
-              {(displayName || userEmail || "?")[0].toUpperCase()}
-            </div>
-          </a>
-          <button
-            className="mobile-menu-btn"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: "6px", flexDirection: "column", gap: "5px" }}
-          >
-            <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
-            <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
-            <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
-          </button>
-        </>
-      ) : (
-        <>
-          <a href="/login" style={{
+            <a
+            href="https://buymeacoffee.com/squawkstudy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bmc-btn"
+            style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                fontSize: "12px",
+                fontWeight: 700,
+                color: "#0f172a",
+                background: "#FFDD00",
+                padding: "5px 12px",
+                borderRadius: "6px",
+                textDecoration: "none",
+                flexShrink: 0,
+            }}
+            >
+            <svg width="16" height="16" viewBox="0 0 140 140" fill="none">
+                <path d="M62 30 Q65 24 62 18" stroke="#0f172a" strokeWidth="4" strokeLinecap="round"/>
+                <path d="M82 30 Q85 24 82 18" stroke="#0f172a" strokeWidth="4" strokeLinecap="round"/>
+                <rect x="38" y="40" width="64" height="16" rx="6" fill="none" stroke="#0f172a" strokeWidth="6"/>
+                <path d="M42 56 L48 106 Q49 114 57 114 L83 114 Q91 114 92 106 L98 56 Z" fill="none" stroke="#0f172a" strokeWidth="6" strokeLinejoin="round"/>
+                <path d="M52 70 Q70 64 88 70 L85 102 Q84.5 106 80 106 L60 106 Q55.5 106 55 102 Z" fill="#0f172a"/>
+            </svg>
+            Buy me a coffee
+            </a>
+            <a href="/login" style={{
             fontSize: "13px", color: "#0f172a", background: "#f59e0b",
             padding: "6px 14px", borderRadius: "6px", fontWeight: 700, textDecoration: "none",
-          }} className="nav-signup">Sign up free</a>
-          <button
+            }} className="nav-signup">Sign up free</a>
+            <button
             className="mobile-menu-btn"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: "6px", flexDirection: "column", gap: "5px" }}
-          >
+            >
             <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
             <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
             <div style={{ width: "22px", height: "2px", background: "#94a3b8", borderRadius: "2px" }} />
-          </button>
+            </button>
         </>
-      )}
+        )}
     </div>
 
     {/* Mobile dropdown */}

@@ -550,53 +550,51 @@ export default function SubjectPage({ params }: { params: Promise<{ id: string }
   ],
   "communications": [
     {
-      id: 1, name: "RT Basics",
-      lessons: [
-        { id: 1, name: "Equipment & Frequencies", emoji: "📻" },
+        id: 1, name: "RT Fundamentals",
+        lessons: [
+        { id: 1, name: "Equipment", emoji: "📻" },
         { id: 2, name: "Alphabet, Numbers & Time", emoji: "🔤" },
-        { id: 3, name: "Procedure Words", emoji: "💬" },
-      ],
-      testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
+        { id: 3, name: "Standard Words", emoji: "💬" },
+        ],
+        testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
     },
     {
-      id: 2, name: "RT Procedures",
-      lessons: [
+        id: 2, name: "RT Procedures",
+        lessons: [
         { id: 1, name: "Read-back Requirements", emoji: "🔁" },
-        { id: 2, name: "Standard Phraseology", emoji: "📖" },
-        { id: 3, name: "Blocked Calls", emoji: "🚫" },
-      ],
-      testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
+        { id: 2, name: "Discipline", emoji: "🚫" },
+        { id: 3, name: "Call Sign", emoji: "📡" },
+        ],
+        testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
     },
     {
-      id: 3, name: "Aerodrome Communications",
-      lessons: [
+        id: 3, name: "Aerodrome Communications",
+        lessons: [
         { id: 1, name: "Ground", emoji: "🛣️" },
-        { id: 2, name: "Take-off & Departure", emoji: "🛫" },
-        { id: 3, name: "Approach & Landing", emoji: "🛬" },
-        { id: 4, name: "ATIS", emoji: "📡" },
-      ],
-      testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
+        { id: 2, name: "Approach & Landing", emoji: "🛬" },
+        { id: 3, name: "Automated Broadcasts", emoji: "📋" },
+        ],
+        testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
     },
     {
-      id: 4, name: "En-route & ATC",
-      lessons: [
-        { id: 1, name: "FIS & Radar Services", emoji: "🎯" },
+        id: 4, name: "ATC Services",
+        lessons: [
+        { id: 1, name: "Radar Services", emoji: "🎯" },
         { id: 2, name: "Position Reports", emoji: "📍" },
-        { id: 3, name: "ATC Clearances", emoji: "✅" },
-        { id: 4, name: "Transponder Procedures", emoji: "📟" },
-      ],
-      testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
+        { id: 3, name: "Clearances", emoji: "📟" },
+        ],
+        testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
     },
     {
-      id: 5, name: "Emergency & Special",
-      lessons: [
-        { id: 1, name: "Mayday & Light Signals", emoji: "🆘" },
-        { id: 2, name: "Radio Failure", emoji: "⚡" },
-        { id: 3, name: "Interception & Language", emoji: "✈️" },
-      ],
-      testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
+        id: 5, name: "Emergency Phraseology",
+        lessons: [
+        { id: 1, name: "MAYDAY & PAN PAN Calls", emoji: "🆘" },
+        { id: 2, name: "Radio Failure Procedures", emoji: "⚡" },
+        { id: 3, name: "SILENCE MAYDAY", emoji: "📢" },
+        ],
+        testLesson: { id: 6, name: "Unit Test", emoji: "🏆" }
     },
-  ],
+ ],
 }
 
 const units = unitsMap[id] || []

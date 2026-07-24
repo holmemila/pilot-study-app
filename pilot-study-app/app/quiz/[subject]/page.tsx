@@ -97,7 +97,28 @@ export default function Quiz({ params }: { params: Promise<{ subject: string }> 
 
     const roundSizes: Record<number, number> = { 1: 5, 2: 7, 3: 10 }
     const count = isUnitTest ? Math.min(20, pool.length) : roundParam ? (roundSizes[parseInt(roundParam)] || pool.length) : pool.length
-    setQuestions(shuffle(pool).slice(0, count))
+    const selected = shuffle(pool).slice(0, count)
+
+    // Shuffle option order for multiple-choice and select-all questions, remapping the correct answer index(es)
+    const shuffledQuestions = selected.map(q => {
+      if ((q.type === "multiple-choice" || q.type === "select-all") && q.options) {
+        const indices = q.options.map((_, i) => i)
+        const shuffledIndices = shuffle(indices)
+        const newOptions = shuffledIndices.map(i => q.options![i])
+
+        if (q.type === "multiple-choice") {
+          const newCorrect = shuffledIndices.indexOf(q.correct as number)
+          return { ...q, options: newOptions, correct: newCorrect }
+        } else {
+          const oldCorrect = q.correct as number[]
+          const newCorrect = oldCorrect.map(oldIdx => shuffledIndices.indexOf(oldIdx))
+          return { ...q, options: newOptions, correct: newCorrect }
+        }
+      }
+      return q
+    })
+
+    setQuestions(shuffledQuestions)
     setLoading(false)
   }, [subject])
 
