@@ -56,19 +56,6 @@ export default function Navbar() {
       <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
         <img src="/logo.png" alt="Squawk" style={{ height: "64px", width: "auto" }} />
       </a>
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "5px",
-        background: "transparent",
-        border: "1px solid #334155",
-        borderRadius: "6px",
-        padding: "3px 10px",
-        cursor: "default",
-      }}>
-        <span style={{ fontSize: "11px", fontWeight: 700, color: "#94a3b8", letterSpacing: "0.04em" }}>EASA PPL</span>
-        <span style={{ fontSize: "9px", color: "#475569" }}>▾</span>
-      </div>
     </div>
 
     {/* Nav links — hidden on mobile */}
