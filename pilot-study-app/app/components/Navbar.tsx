@@ -54,7 +54,7 @@ export default function Navbar() {
     }}>
     <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
       <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-        <img src="/logo.png" alt="Squawk" style={{ height: "56px", width: "auto" }} />
+        <img src="/logo.png" alt="Squawk" style={{ height: "64px", width: "auto" }} />
       </a>
       <div style={{
         display: "flex",
@@ -155,14 +155,13 @@ export default function Navbar() {
                 rel="noopener noreferrer"
                 className="bmc-btn"
                 style={{
-                display: "flex",
                 alignItems: "center",
                 gap: "6px",
-                fontSize: "12px",
+                fontSize: "13px",
                 fontWeight: 700,
                 color: "#0f172a",
                 background: "#FFDD00",
-                padding: "5px 12px",
+                padding: "6px 12px",
                 borderRadius: "6px",
                 textDecoration: "none",
                 flexShrink: 0,
@@ -210,11 +209,11 @@ export default function Navbar() {
                 display: "flex",
                 alignItems: "center",
                 gap: "6px",
-                fontSize: "12px",
+                fontSize: "13px",
                 fontWeight: 700,
                 color: "#0f172a",
                 background: "#FFDD00",
-                padding: "5px 12px",
+                padding: "6px 12px",
                 borderRadius: "6px",
                 textDecoration: "none",
                 flexShrink: 0,

@@ -565,8 +565,187 @@ const synopsisData = {
             "ADS-B broadcasts GPS position continuously to ATC and other aircraft",
         ]
         },
-    ]
+     ]
+  },
+    "communications": {
+  title: "Communications",
+  units: [
+    {
+      id: 1,
+      name: "RT Fundamentals",
+      content: [
+        "## VHF AND HF COMMUNICATIONS",
+        "Aviation radio communication relies primarily on VHF (Very High Frequency), operating between 118.000 and 136.975 MHz. VHF is the standard for all typical local, en-route, and aerodrome communications, chosen specifically because it provides clear, generally static-free voice quality. Its limitation is that it is line-of-sight only, meaning the signal cannot bend around the curvature of the earth or pass through significant terrain. Range therefore increases with altitude, and can be significantly reduced or blocked entirely by intervening hills or mountains at low level.",
+        "To fit more usable channels into the limited VHF band, particularly in busy European airspace, 8.33 kHz channel spacing has progressively replaced the older, wider 25 kHz spacing, tripling the number of available channels within the same frequency range. This has been essential as VHF spectrum has become increasingly congested with growing air traffic.",
+        "For communication far beyond VHF's line-of-sight range, such as oceanic crossings, HF (High Frequency) radio is used instead, operating between 3 and 30 MHz. HF achieves its much greater range through sky wave propagation, where the signal reflects off the ionosphere and back down to earth, allowing it to travel thousands of miles rather than being limited to the direct line-of-sight distance VHF achieves. The trade-off is that HF is more prone to static and variable signal quality than VHF.",
+        "Because continuously monitoring a noisy HF frequency is impractical over long flights, SELCAL (Selective Calling) is often used on HF, a system where each aircraft is assigned a unique 4-letter code; when ATC transmits that code, a chime alerts the crew, allowing them to reduce HF volume and attend to other duties without missing an actual call specifically intended for them.",
+        "The squelch control on an aircraft radio suppresses the constant background hiss present when no transmission is being received. Correctly set, just above the noise floor, it ensures genuine transmissions come through clearly without being masked by constant background noise, while set too high it risks blocking weak but genuine incoming signals.",
+
+        "## THE PHONETIC ALPHABET, NUMBERS, AND TIME",
+        "The ICAO phonetic alphabet exists to eliminate ambiguity when spelling out letters over the radio, where similar-sounding letters (like B, D, and V) can easily be confused, particularly under poor radio conditions or with varying accents. The full sequence is: Alpha, Bravo, Charlie, Delta, Echo, Foxtrot, Golf, Hotel, India, Juliet, Kilo, Lima, Mike, November, Oscar, Papa, Quebec, Romeo, Sierra, Tango, Uniform, Victor, Whiskey, X-ray, Yankee, Zulu. This sequence should become second nature, since callsigns, identifiers, and clarifications regularly rely on it.",
+        "Numbers are also modified from their everyday pronunciation specifically to remain distinct over the radio. 3 is pronounced 'tree', 4 as 'fower', 5 as 'fife', and 9 as 'niner', the emphasis and distinct sound of each avoiding confusion with similar-sounding numbers or, in the specific case of 9, with the German word 'nein' (no) in international operations. Numbers are generally spoken as individual digits rather than as a whole number, for example a heading of 270 is 'two seven zero', never 'two-seventy' or 'two hundred and seventy'.",
+        "Altitudes and flight levels, however, follow a distinct convention. Altitudes use the words 'thousand' and 'hundred': 6500ft is 'six thousand five hundred'. Flight levels, by contrast, are spoken as pure digits without any unit words: FL350 is 'flight level three five zero', never 'flight level three fifty' or a converted altitude in feet.",
+        "All aviation time is transmitted in UTC (Coordinated Universal Time, also called Zulu time), regardless of the local time zone of the flight, ensuring a single, unambiguous, universal reference. Time is spoken as four individual digits (HHMM): 0930 UTC is 'zero niner three zero'. Where there is no ambiguity about the hour, only the minutes may sometimes be given, though the full four-digit format remains the standard.",
+        "Frequencies are spoken using the word 'decimal' in place of the decimal point, with each digit given individually: 118.500 MHz is 'one one eight decimal five', with trailing zeros generally omitted unless needed to distinguish an 8.33 kHz channel from a similar one.",
+
+        "## STANDARD WORDS AND PHRASES",
+        "Standard ICAO RT phraseology exists to provide clear, internationally understood, unambiguous communication regardless of the specific pilots or controllers involved, or their native language or accent. Learning and consistently using this standard vocabulary, rather than informal or improvised phrasing, is central to safe and efficient RT.",
+        "AFFIRM means yes, and NEGATIVE means no, both replacing the plain English words specifically because they remain more clearly distinguishable from each other over degraded radio conditions than 'yes' and 'no' would be. WILCO ('will comply') confirms that a message has been received, understood, and will be acted upon, a materially stronger response than ROGER, which confirms only that a transmission was received, without implying either understanding or an intention to comply. Because WILCO already implies receipt, combining 'ROGER WILCO' together is considered redundant, one or the other should be used, not both.",
+        "UNABLE indicates that an instruction cannot be safely complied with, and should ideally be followed by a brief reason where practical, allowing the other party to provide an appropriate alternative. A pilot should never simply attempt to comply with an instruction they genuinely cannot carry out safely, UNABLE exists precisely to avoid that situation.",
+        "SAY AGAIN is the standard phrase for requesting repetition of all or part of a transmission. The word 'REPEAT' is deliberately avoided in aviation RT, since it carries a specific, different meaning (fire again) in a military artillery context, and could cause dangerous confusion if misapplied.",
+        "STANDBY means the receiving station needs a brief moment before responding, typically because they are attending to something else, it grants no clearance of any kind and simply asks the other party to wait. CORRECTION alerts the receiving station that an error was just made in the immediately preceding transmission, with the correct, intended information following right after. BREAK is used to separate two messages addressed to two different aircraft within a single overall transmission, making clear which portion applies to which aircraft. CONFIRM requests that the other station verify or restate specific information, such as an assigned altitude or squawk code.",
+      ],
+      keyFacts: [
+        "VHF (118.000-136.975 MHz) is line-of-sight; HF (3-30 MHz) uses sky wave propagation for long range",
+        "8.33 kHz spacing triples available channels compared to 25 kHz spacing",
+        "SELCAL allows ATC to alert a specific aircraft on HF without continuous crew monitoring",
+        "Phonetic alphabet exists to eliminate ambiguity spelling letters — know the full sequence cold",
+        "Numbers: 3=Tree, 4=Fower, 5=Fife, 9=Niner — spoken individually, not as whole numbers",
+        "Altitudes use 'thousand'/'hundred' (6500ft = six thousand five hundred); Flight levels use pure digits (FL350 = flight level three five zero)",
+        "All time is UTC, spoken as four digits (HHMM)",
+        "AFFIRM = yes; NEGATIVE = no; WILCO = received, understood, will comply (stronger than ROGER)",
+        "SAY AGAIN (not 'repeat') requests retransmission; UNABLE indicates inability to safely comply",
+        "'ROGER WILCO' together is redundant — use one or the other",
+      ]
     },
+    {
+    id: 2,
+    name: "RT Procedures & Discipline",
+    content: [
+        "## MANDATORY READ-BACK ITEMS",
+        "Certain categories of ATC instruction are so safety-critical that international regulation requires the pilot to read them back in full, allowing the controller to verify the correct information was actually received before the aircraft proceeds. This is often described as a closed-loop check, the original sender (ATC) can confirm their message was correctly understood by hearing it repeated back accurately, catching any error before it can develop into a genuine safety problem.",
+        "The mandatory ICAO read-back items include: runway-related instructions (entering, crossing, taking off from, landing on, or holding short of a runway), runway in use, altimeter (QNH) settings, SSR transponder codes, level (altitude or flight level) instructions, heading instructions, speed instructions, and frequency changes. Where multiple mandatory items are given together in a single transmission, all of them must be included in the read-back, not just one.",
+        "A complete read-back also includes the aircraft's own callsign, typically at the end, confirming to ATC exactly which aircraft is responding, particularly important on a busy frequency with several aircraft present. Simply responding 'Roger' to a mandatory read-back item is not sufficient, since ROGER only confirms that a transmission was received generally, it does not confirm that the specific content, such as a QNH value or assigned squawk code, was correctly understood.",
+        "The safety value of read-backs is well documented: numerous real incidents and accidents have been prevented specifically because a controller caught an incorrect read-back and corrected it before the error could develop further. Any station, including another pilot, who becomes aware of a potentially unsafe incorrect read-back that ATC does not appear to have caught should alert ATC, particularly for runway-related instructions given their direct connection to runway incursion risk.",
+
+        "## BLOCKED TRANSMISSIONS AND RT DISCIPLINE",
+        "A blocked transmission occurs when two or more stations transmit simultaneously on the same frequency. The signals combine, typically producing a distinctive squealing or heterodyne tone, or otherwise garbled audio, and neither transmission is properly received by anyone listening. Good RT discipline, briefly listening before pressing the push-to-talk button to confirm the frequency is genuinely clear, significantly reduces how often this occurs.",
+        "When a blocked transmission does happen, the correct response is to wait for a clear gap in the frequency and then retransmit the original message, rather than assuming it was somehow received, or immediately transmitting again over other ongoing traffic. Persistent poor RT discipline across a busy frequency increases controller workload, creates a greater need for clarification, and cumulatively raises the risk that a genuinely serious misunderstanding eventually gets missed rather than caught.",
+        "Beyond simply avoiding blocked transmissions, good RT discipline also means keeping transmissions concise and using standard phraseology rather than lengthy, informal conversation, particularly on a busy frequency shared by many aircraft. Every second a pilot occupies the frequency with an overly long or non-standard transmission is a second another aircraft cannot use it, potentially delaying a more urgent or time-critical communication.",
+
+        "## CALL SIGN AND FREQUENCY MANAGEMENT",
+        "An aircraft's callsign, typically its registration or an assigned callsign, is central to nearly every RT exchange, identifying which aircraft a given instruction or read-back applies to. On a frequency shared by multiple aircraft, consistently and clearly stating the full callsign helps avoid confusion, particularly where similar-sounding callsigns might otherwise be mistaken for one another.",
+        "Frequency changes are themselves a mandatory read-back item, ensuring ATC knows the pilot correctly received the new frequency before switching away from the one currently in use. Upon changing frequency, the pilot generally makes an initial call on the new frequency following the standard format, station called, own callsign, and relevant details such as position and level, allowing the new controller to build an accurate picture of the aircraft joining their frequency.",
+        "Managing frequency changes smoothly, particularly during a busy phase of flight such as departure or arrival, requires anticipating the change, having the new frequency ready to select, and promptly making a clear initial call once switched, rather than leaving a gap during which the new controller has no awareness the aircraft has joined their frequency. Good frequency management, alongside disciplined listening and concise transmissions, forms the practical foundation of safe, efficient RT throughout a flight.",
+    ],
+    keyFacts: [
+        "Mandatory read-back items: runway instructions, runway in use, QNH, SSR code, level, heading, speed, frequency changes",
+        "Read-backs must include the aircraft's callsign, typically at the end",
+        "'Roger' alone is not sufficient for a mandatory read-back item — the actual content must be repeated",
+        "A blocked transmission = two stations transmitting simultaneously, producing a squeal/garbled audio",
+        "Listen before transmitting to avoid blocking ongoing traffic",
+        "After a blocked transmission: wait for a clear gap, then retransmit — don't assume receipt",
+        "Frequency changes are a mandatory read-back item — confirm before switching away",
+        "Make a proper initial call on any new frequency: station, callsign, position/level as relevant",
+     ]
+    },
+    {
+    id: 3,
+    name: "Aerodrome Communications",
+    content: [
+        "## GROUND, TAXI, AND DEPARTURE",
+        "An initial call to Ground follows a standard order: the station being called, the aircraft's own callsign, its type, its current position on the aerodrome, and finally the specific request, such as taxi instructions for departure. Including the aircraft type helps the controller anticipate relevant performance characteristics and plan sequencing appropriately, even at a small aerodrome.",
+        "A taxi clearance includes the runway in use, the specific taxiway route to follow, and any hold-short instructions, all mandatory elements that must be correctly read back given their direct connection to runway safety. 'HOLD POSITION' is a distinct instruction meaning stop immediately, wherever the aircraft currently is, and remain stopped until further instructed, different from a hold-short instruction, which refers to a specific point such as a runway holding line rather than an immediate, unconditional stop.",
+        "'LINE UP AND WAIT' authorises the aircraft to taxi onto the runway and align with the centreline, but does not itself constitute a take-off clearance, the aircraft must wait on the runway for a further, separate, explicit clearance before commencing the take-off roll. A full take-off clearance read-back must include, at minimum, the runway number and the aircraft's callsign, with any additional elements given in the same transmission, such as a frequency change, also included.",
+        "Following take-off and initial climb, Tower typically hands the aircraft to Departure (or an equivalent approach/radar service) for the continuation of the flight, this frequency change is itself a mandatory read-back item, and the pilot should promptly make a proper initial call on the new frequency once switched.",
+
+        "## APPROACH AND LANDING",
+        "An initial call to Approach follows a similarly structured order: station, callsign, aircraft type, position, level, the current ATIS identifier received, and the specific request, such as joining instructions. Including the ATIS identifier confirms to the controller that the pilot already holds current aerodrome information, avoiding the need to separately repeat those same details by voice.",
+        "A landing clearance includes clearance to land, the runway, and the surface wind, the wind is included specifically to allow the pilot to assess the crosswind component for the approach and landing. The mandatory minimum read-back is clearance to land, the runway, and the callsign, the wind itself, while genuinely useful, does not need to be repeated verbatim.",
+        "GO AROUND is a mandatory ATC instruction to abandon the current approach and climb away, typically issued due to a genuine safety concern such as an obstruction on the runway or insufficient separation from other traffic. It must be complied with immediately, without argument or delay, given that ATC may be aware of a hazard not visible to the pilot from the cockpit, any query or clarification is appropriately sought once the aircraft is safely established in the climb, not before initiating the go-around itself.",
+        "After landing and vacating the runway, the pilot should remain on Tower frequency until specifically instructed to contact Ground, ensuring Tower retains an accurate picture of the aircraft's status until formally handing it off for the taxi-in phase.",
+
+        "## ATIS AND AUTOMATED BROADCASTS",
+        "ATIS (Automatic Terminal Information Service) is a continuously repeating recorded broadcast on a dedicated frequency, providing key current aerodrome information: surface wind, visibility, significant weather, cloud, temperature, dew point, QNH, and runway in use. It reflects current, observed conditions, similar in nature to a live METAR, rather than a forecast.",
+        "Each ATIS update is identified using a sequential phonetic alphabet letter, Alpha, then Bravo, then Charlie, and so on, cycling back to Alpha once Zulu is reached. ATIS is updated whenever conditions change significantly, such as a runway change due to a wind shift, and at a minimum at least hourly even without any significant change, ensuring the broadcast never becomes too far out of date.",
+        "Obtaining ATIS before initial contact with Approach or Tower is standard practice, allowing the pilot to include the current identifier in their initial call, this single detail confirms to the controller that the pilot already holds current information, meaningfully reducing overall RT workload compared to the controller needing to repeat the same details individually to every arriving or departing aircraft.",
+        "D-ATIS (Data-link ATIS) delivers the same information digitally as text to suitably equipped aircraft, rather than only as a voice broadcast. This allows the crew to review the information visually and at their own pace, reducing the risk of mishearing or forgetting a detail compared to relying entirely on a single listen to a voice-only broadcast, a genuine advantage particularly in a busy, high-workload, single-pilot cockpit.",
+    ],
+    keyFacts: [
+        "Initial Ground call: station, callsign, type, position, request",
+        "HOLD POSITION = stop immediately wherever you are; hold-short = stop at a specific point",
+        "LINE UP AND WAIT authorises entering the runway only — NOT a take-off clearance",
+        "Take-off clearance minimum read-back: runway number + callsign",
+        "Initial Approach call includes the ATIS identifier received, confirming current information held",
+        "Landing clearance minimum read-back: clearance to land + runway + callsign (wind not required verbatim)",
+        "GO AROUND must be complied with immediately — query only once safely climbing",
+        "Remain on Tower frequency after landing until instructed to contact Ground",
+        "ATIS = current observed conditions (like a live METAR), not a forecast — updated at least hourly",
+        "D-ATIS delivers the same info as text, reducing risk of mishearing a voice-only broadcast",
+     ]
+    },
+    {
+    id: 4,
+    name: "En-Route & ATC Services",
+    content: [
+        "## FLIGHT INFORMATION AND RADAR SERVICES",
+        "A Flight Information Service (FIS) provides useful information to support the safe conduct of a flight, weather updates, relevant NOTAMs, and traffic information where known, but crucially does not provide separation. Under FIS, the pilot remains fully responsible for their own separation from all other traffic, the service is purely informational.",
+        "Beyond basic FIS, a tiered system of radar services offers progressively more support. A Basic Service provides information only, on request, without any proactive monitoring for traffic conflicts. A Traffic Service goes further, with the controller proactively passing traffic information on relevant known conflicting traffic, though still without providing full separation. A Deconfliction Service is the highest tier of this kind, in which the controller actively provides specific avoiding action advice to prevent conflict with known traffic.",
+        "Even under a Deconfliction Service, the pilot's underlying responsibility to see and avoid other traffic is not entirely removed, ATC radar coverage and traffic detection can genuinely be incomplete, for example non-transponder-equipped aircraft may not be detected at all, meaning ATC advice supports, rather than fully replaces, the pilot's own ongoing visual lookout.",
+        "VOLMET is a separate, distinct service: a continuous broadcast, available on both VHF and HF frequencies, providing METAR and TAF weather information for a predetermined group of major aerodromes. It allows a pilot to obtain updated weather for a destination or possible alternate without needing to contact ATC directly for that specific purpose, useful during the en-route phase of a longer flight.",
+
+        "## POSITION REPORTS",
+        "A position report conveys the aircraft's callsign, current position, time, level, and next waypoint with its estimated time of arrival there, giving ATC both a snapshot of the aircraft's current situation and forward-looking information for ongoing planning. Position reports are particularly important in non-radar airspace, where ATC has no independent surveillance and relies on voice reports as their primary, sometimes only, means of maintaining an accurate traffic picture.",
+        "Compulsory reporting points, marked on charts with a solid triangle, require a position report as standard procedure, whether or not ATC specifically requests one. On-request reporting points, marked with an open (unfilled) triangle, require a report only if ATC specifically asks for one at that point.",
+        "A pilot should proactively revise and pass an updated ETA if actual groundspeed diverges significantly from what was originally planned, whether running ahead of or behind schedule, keeping ATC's picture accurate rather than allowing an increasingly inaccurate original estimate to stand uncorrected.",
+        "A PIREP (Pilot Report) is distinct from a position report: it conveys the pilot's actual, real-time observation of meteorological conditions encountered in flight, such as turbulence severity, icing, cloud base and tops, or visibility. PIREPs are genuinely valuable precisely because they reflect real, confirmed conditions rather than forecast conditions, and can meaningfully inform both ATC's picture and other pilots' subsequent route or altitude planning.",
+
+        "## ATC CLEARANCES AND TRANSPONDER PROCEDURES",
+        "An ATC clearance authorises an aircraft to proceed under specified conditions, such as a route, level, or specific instruction, and is required before entering controlled airspace among other situations. Importantly, a clearance does not itself guarantee terrain or obstacle clearance, nor does it necessarily provide separation from all categories of traffic, depending on the specific airspace classification involved, both remain the pilot's own ongoing responsibility.",
+        "Special VFR (SVFR) is a specific ATC clearance permitting VFR flight within a Control Zone at conditions below the normal VMC minima, requested by stating 'Request Special VFR' to the relevant controlling authority. It remains subject to specific, though reduced, minima, and is only available with an explicit clearance, not simply by virtue of flying VFR generally.",
+        "The transponder provides ATC with aircraft identification (Mode A squawk code) and, where enabled, altitude information (Mode C), with Mode S adding a unique aircraft address and additional data such as callsign. Correctly configuring an assigned squawk code, and Mode C where instructed, is essential, and an assigned squawk code is itself a mandatory read-back item.",
+        "Specific transponder codes carry universally recognised emergency meanings: 7700 indicates a general emergency, 7600 indicates radio communication failure, and 7500 indicates unlawful interference such as a hijacking. These codes must never be set accidentally, and every pilot should be able to recall and correctly apply them without hesitation.",
+    ],
+    keyFacts: [
+        "FIS provides information only — no separation is provided under FIS",
+        "Basic Service = information on request; Traffic Service = proactive traffic info; Deconfliction Service = specific avoiding action advice",
+        "Even under Deconfliction Service, pilot retains responsibility for own visual lookout",
+        "VOLMET = continuous METAR/TAF broadcast for major aerodromes, on VHF and HF",
+        "Position reports: callsign, position, time, level, next waypoint + ETA",
+        "Compulsory reporting points (solid triangle) require a report regardless of request; on-request points (open triangle) only if asked",
+        "PIREP = pilot's actual observed weather conditions, not a forecast",
+        "ATC clearance does not guarantee terrain/obstacle clearance or full separation from all traffic",
+        "Special VFR requires an explicit ATC clearance and remains subject to reduced minima",
+        "7700 = general emergency; 7600 = radio failure; 7500 = unlawful interference",
+     ]
+    },
+    {
+    id: 5,
+    name: "Emergency RT Phraseology",
+    content: [
+        "## MAYDAY AND PAN PAN CALLS",
+        "MAYDAY, spoken three times ('MAYDAY MAYDAY MAYDAY'), declares grave and imminent danger requiring immediate assistance. A complete MAYDAY call, where time and workload permit, includes the station called if known, the aircraft's callsign, the nature of the emergency, position, intentions, and the number of persons on board, though under genuine time pressure the pilot should prioritise the most critical elements, at minimum 'MAYDAY' and the callsign, rather than transmitting nothing at all.",
+        "PAN PAN, similarly spoken three times ('PAN PAN PAN PAN PAN PAN'), declares a serious situation that does not, at that time, involve grave and imminent danger, for example a partial engine failure where a safe landing still appears achievable. A PAN PAN call takes priority over all routine RT traffic, though it remains subordinate to an active MAYDAY if both are present on the same frequency.",
+        "A situation's classification is not fixed for the duration of the emergency: if circumstances genuinely worsen, a PAN PAN can and should be upgraded to a MAYDAY, and conversely, if a MAYDAY situation genuinely improves such that grave and imminent danger no longer applies, it can be downgraded to a PAN PAN or cancelled entirely, in each case the pilot should inform ATC of the change so the emergency status accurately reflects the actual current situation.",
+        "In genuinely borderline cases where a pilot is uncertain whether MAYDAY or PAN PAN is more appropriate, erring on the side of the higher level of urgency is generally the safer, more defensible approach, since the practical cost of a slightly premature declaration is usually far lower than that of a delayed one in a situation that continues to worsen.",
+
+        "## RADIO FAILURE PROCEDURES",
+        "Upon experiencing radio communication failure, a pilot should squawk 7600, alerting ATC via radar to the situation even though voice contact has been lost. Before assuming a complete equipment failure, basic troubleshooting is sensible: confirming the correct frequency is selected, checking volume and squelch settings, and attempting contact on the current frequency, on 121.5 MHz, and on the previously used frequency.",
+        "The standard lost communication procedure is to proceed as flight planned to the intended destination, this predictable behaviour is the core assumption underpinning the entire system, allowing ATC to reasonably anticipate the aircraft's likely route and coordinate surrounding traffic and the destination aerodrome accordingly. Deviating to land at a more convenient but unplanned aerodrome instead undermines this predictability and should generally be avoided unless a genuinely more serious situation independently requires it.",
+        "Since further verbal instructions cannot reach an aircraft with radio failure, ATC light signals become the primary, often only, remaining means of communication, particularly for a landing clearance upon arrival. A pilot experiencing radio failure should watch for and correctly interpret these signals: a steady green light in flight means cleared to land, while a flashing red light means the aerodrome is unsafe and the aircraft must not land there, requiring diversion to a suitable alternative.",
+        "Together, the 7600 squawk, proceeding as planned, and watching for light signals form a single, coherent system, each element compensating for the absence of voice communication through a different available channel, radar identification, predictable routing, or visual signals, allowing safe coordination between the aircraft and ATC to continue despite the loss of the normal communication method.",
+
+        "## RELAY AND SILENCE MAYDAY PROCEDURES",
+        "A MAYDAY RELAY call is used when a station, often another aircraft, becomes aware of a distress call that may not have reached ATC directly, and relays the details on the aircraft's behalf. It follows a broadly similar structure to an original MAYDAY, spoken as 'MAYDAY RELAY' three times, followed by whatever details are actually known, even if incomplete, providing ATC with genuine available information is more valuable than withholding a relay entirely due to incomplete knowledge of the full situation.",
+        "SILENCE MAYDAY (or SILENCE DISTRESS), typically transmitted by ATC or the coordinating station, instructs all other stations to cease transmitting on the affected frequency, keeping it clear specifically for the ongoing distress communication. Other stations are expected to maintain this silence unless they can offer direct assistance, or unless relaying becomes genuinely necessary because the original call may not have reached ATC.",
+        "Once the emergency situation is fully resolved, the controlling station formally confirms that distress traffic has ended, releasing the frequency back to normal use. This formal confirmation is important precisely because it clearly signals to every station on the frequency that the special silence and priority handling associated with the emergency are no longer required.",
+        "The entire distress and urgency communication system, MAYDAY, PAN PAN, radio failure procedures, relay, and silence, ultimately exists to support, not replace, the fundamental priority of any emergency: aviate, navigate, then communicate. Flying the aircraft and managing the actual situation always comes first, standardised phraseology simply ensures that once communication does happen, it is as fast, clear, and unambiguous as possible, precisely when workload and stress make that hardest to achieve unaided.",
+    ],
+    keyFacts: [
+        "MAYDAY (x3) = grave and imminent danger; PAN PAN (x3) = serious but not immediately dangerous",
+        "A situation can be upgraded (PAN PAN → MAYDAY) or downgraded, always inform ATC of the change",
+        "When genuinely uncertain, err toward the higher level of urgency rather than under-declaring",
+        "Radio failure: squawk 7600, attempt contact on current/121.5/previous frequency, proceed as flight planned",
+        "Light signals become the primary means of communication once radio contact is lost",
+        "Steady green (in flight) = cleared to land; flashing red = aerodrome unsafe, do not land",
+        "MAYDAY RELAY relays a distress call on behalf of an aircraft that may not be in contact with ATC",
+        "SILENCE MAYDAY clears the frequency for distress traffic — maintain silence unless able to assist or relay",
+        "A formal 'distress traffic ended' transmission releases the frequency back to normal use",
+        "Underlying priority in any emergency: aviate, navigate, then communicate",
+     ]
+    },
+  ]
+ },
 }
 
 export default function Synopsis({ params }: { params: Promise<{ subject: string }> }) {

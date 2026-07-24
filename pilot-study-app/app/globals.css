@@ -63,6 +63,19 @@ button { cursor: pointer; font-family: inherit; }
   }
 }
 
+.bmc-btn {
+  display: flex;
+}
+
+@media (max-width: 640px) {
+  .hero-bg {
+    background-attachment: scroll !important;
+  }
+  .bmc-btn {
+    display: none !important;
+  }
+}
+
 .synopsis-sidebar {
   display: block;
 }

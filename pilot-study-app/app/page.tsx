@@ -311,9 +311,9 @@ function actionBtn(bg: string, color: string): React.CSSProperties {
 function LandingPage({ onContinue }: { onContinue: () => void }) {
   useEffect(() => {
     const steps = [
-      { rotation: -50, title: "Choose your subject", desc: "Pick from all 9 EASA PPL subjects. Each is broken into 5 units with individual lessons — study at your own pace.", amber: [] as number[] },
-      { rotation: 0, title: "Work through lessons", desc: "Each lesson has multiple question rounds — multiple choice, true/false, fill in the blank. Progress tracked automatically as you go.", amber: [1] },
-      { rotation: 50, title: "Take the mock exam", desc: "When you feel ready, sit the full 120-question EASA-format mock exam. Each subject is timed. You need 75% to pass — just like the real thing.", amber: [1, 2] },
+      { rotation: -50, title: "Choose your subject", desc: "Pick from all 9 EASA PPL subjects. Each is broken into 5 units with individual lessons, study at your own pace.", amber: [] as number[] },
+      { rotation: 0, title: "Work through lessons", desc: "Each lesson has multiple question rounds of multiple choice, true/false, fill in the blank. Increasing question difficulty and count as you progress in each lesson.", amber: [1] },
+      { rotation: 50, title: "Take the mock exam", desc: "When you feel ready, sit the full 120-question EASA-format mock exam. Each subject is timed. You need 75% to pass, just like the real thing.", amber: [1, 2] },
     ]
     let current = 0
 
@@ -338,12 +338,12 @@ function LandingPage({ onContinue }: { onContinue: () => void }) {
       ;[1, 2, 3].forEach(n => {
         const tick = document.getElementById(`hw-tick${n}`)
         const num = document.getElementById(`hw-num${n}`)
-        const lit = step.amber.includes(n)
+        const lit = step.amber.includes(n) || n === current + 1
         if (tick) { tick.setAttribute("stroke", lit ? "#f59e0b" : "#94a3b8"); tick.setAttribute("stroke-width", lit ? "2.2" : "1.8") }
         if (num) num.setAttribute("fill", lit ? "#f59e0b" : "#94a3b8")
       })
 
-      knob.setAttribute("stroke", current > 0 ? "#f59e0b" : "#aab4be")
+      knob.setAttribute("stroke", "#f59e0b" )
 
       ;[0, 1, 2].forEach(i => {
         const dot = document.getElementById(`hw-dot-${i}`)
@@ -356,7 +356,10 @@ function LandingPage({ onContinue }: { onContinue: () => void }) {
 
     ;(window as any).howDialAdvance = () => { current = (current + 1) % 3; update() }
     ;(window as any).howDialSetStep = (i: number) => { current = i; update() }
+
+    update()
   }, [])
+
   return (
     <div style={{ minHeight: "100vh", background: "#0f172a" }}>
 
@@ -390,7 +393,10 @@ function LandingPage({ onContinue }: { onContinue: () => void }) {
             The smarter way to study for your Private Pilot Licence. 9 subjects, thousands of questions, built around how pilots actually learn.
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-            <a href="/login" style={{ background: "#f59e0b", color: "#0f172a", border: "none", borderRadius: "10px", padding: "14px 32px", fontSize: "15px", fontWeight: 700, cursor: "pointer", textDecoration: "none", display: "inline-block" }}>Sign up free →</a>
+            <a href="/login" style={{ background: "#f59e0b", color: "#0f172a", border: "none", borderRadius: "10px", padding: "14px 32px", fontSize: "15px", fontWeight: 700, cursor: "pointer", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+              Sign up free
+              <img src="/plane-icon.png" alt="" style={{ width: "50px", height: "24px" }} />
+            </a>
             <a href="/login" style={{ background: "transparent", color: "#94a3b8", border: "1px solid #334155", borderRadius: "10px", padding: "14px 32px", fontSize: "15px", fontWeight: 600, cursor: "pointer", textDecoration: "none", display: "inline-block" }}>Log in</a>
           </div>
           <button onClick={onContinue} style={{ background: "none", border: "none", color: "#64748b", fontSize: "14px", fontWeight: 600, cursor: "pointer", marginTop: "16px", textDecoration: "underline" }}>
@@ -519,8 +525,8 @@ function LandingPage({ onContinue }: { onContinue: () => void }) {
                   <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#00000030"/>
                 </filter>
               </defs>
-              <line x1="50" y1="5" x2="50" y2="14" id="hw-tick1" stroke="#94a3b8" strokeWidth="1.8" strokeLinecap="round" transform="rotate(-50 50 55)"/>
-              <text x="5" y="22" id="hw-num1" fontFamily="system-ui" fontSize="12" fontWeight="800" fill="#94a3b8" textAnchor="middle">1</text>
+              <line x1="50" y1="5" x2="50" y2="14" id="hw-tick1" stroke="#f59e0b" strokeWidth="2.2" strokeLinecap="round" transform="rotate(-50 50 55)"/>
+              <text x="6" y="21" id="hw-num1" fontFamily="system-ui" fontSize="12" fontWeight="800" fill="#f59e0b" textAnchor="middle">1</text>
               <line x1="50" y1="5" x2="50" y2="14" id="hw-tick2" stroke="#94a3b8" strokeWidth="1.8" strokeLinecap="round"/>
               <text x="50" y="2" id="hw-num2" fontFamily="system-ui" fontSize="12" fontWeight="800" fill="#94a3b8" textAnchor="middle">2</text>
               <line x1="50" y1="5" x2="50" y2="14" id="hw-tick3" stroke="#94a3b8" strokeWidth="1.8" strokeLinecap="round" transform="rotate(50 50 55)"/>
