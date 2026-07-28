@@ -19,6 +19,25 @@ const allSubjects = [
   { id: "communications", name: "Communications", num: "09", available: true },
 ]
 
+// lessons per unit for each subject, used to calculate total possible rounds
+const subjectLessonCounts: Record<string, number[]> = {
+  "air-law": [3, 3, 3, 3, 3],
+  "agk": [4, 5, 3, 4, 3],
+  "flight-performance": [4, 4, 3, 3, 3],
+  "human-performance": [3, 4, 4, 3, 3],
+  "meteorology": [4, 4, 4, 3, 3],
+  "navigation": [3, 4, 4, 4, 3],
+  "operational-procedures": [4, 4, 4, 3, 3],
+  "principles-of-flight": [4, 4, 3, 3, 3],
+  "communications": [3, 3, 3, 3, 3],
+}
+
+function getTotalRounds(subject: string): number {
+  const units = subjectLessonCounts[subject] || []
+  // each lesson has 3 rounds, each unit has 1 unit test (counts as 1 round)
+  return units.reduce((sum, lessonCount) => sum + lessonCount * 3 + 1, 0)
+}
+
 export default function Home() {
   const [userId, setUserId] = useState<string | null>(null)
   const [displayName, setDisplayName] = useState<string | null>(null)
@@ -72,14 +91,14 @@ export default function Home() {
             .eq("user_id", session.user.id)
 
           if (rounds) {
-            const lessonMap: Record<string, Set<number>> = {}
+            const roundCountMap: Record<string, number> = {}
             rounds.forEach((r: any) => {
-              if (!lessonMap[r.subject]) lessonMap[r.subject] = new Set()
-              lessonMap[r.subject].add(r.lesson_id)
+              roundCountMap[r.subject] = (roundCountMap[r.subject] || 0) + 1
             })
             const pct: Record<string, number> = {}
-            Object.entries(lessonMap).forEach(([subject, lessons]) => {
-              pct[subject] = Math.round((lessons.size / 15) * 100)
+            Object.entries(roundCountMap).forEach(([subject, count]) => {
+              const total = getTotalRounds(subject)
+              pct[subject] = total > 0 ? Math.min(100, Math.round((count / total) * 100)) : 0
             })
             setSubjectProgress(pct)
           }
@@ -97,13 +116,14 @@ export default function Home() {
 
         const guestRounds = getGuestRoundCompletions()
         const lessonMap: Record<string, Set<number>> = {}
+        const roundCountMap: Record<string, number> = {}
         guestRounds.forEach(r => {
-          if (!lessonMap[r.subject]) lessonMap[r.subject] = new Set()
-          lessonMap[r.subject].add(r.lesson_id)
+          roundCountMap[r.subject] = (roundCountMap[r.subject] || 0) + 1
         })
         const pct: Record<string, number> = {}
-        Object.entries(lessonMap).forEach(([subject, lessons]) => {
-          pct[subject] = Math.round((lessons.size / 15) * 100)
+        Object.entries(roundCountMap).forEach(([subject, count]) => {
+          const total = getTotalRounds(subject)
+          pct[subject] = total > 0 ? Math.min(100, Math.round((count / total) * 100)) : 0
         })
         setSubjectProgress(pct)
       }
@@ -152,9 +172,7 @@ if (!userId && showLanding) {
               width: "44px", height: "44px", background: "#1e293b", borderRadius: "10px",
               display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
             }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="1.5" strokeLinecap="round">
-                <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21 4 19 2c-2-2-4-2-5.5-.5L10 5 1.8 6.2c-.5.1-.9.6-.6 1.1l1.4 2.3c.3.5.9.7 1.5.5L8 9l-2 3H4l-1 1 3 2 2 3 1-1v-2l3-2-.5 3.5c-.1.6.1 1.2.6 1.5l2.3 1.4c.5.3 1 0 1.1-.6z"/>
-              </svg>
+              <img src="/plane-icon-small.png" alt="" style={{ width: "95px", height: "70px" }} />
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: "10px", fontWeight: 700, color: "#475569", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>
@@ -210,6 +228,7 @@ if (!userId && showLanding) {
 
         <motion.div
           layout
+          className="subject-grid"
           style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "12px" }}
         >
           {allSubjects.map(subject => {
@@ -222,6 +241,7 @@ if (!userId && showLanding) {
               <motion.div
                 key={subject.id}
                 layout
+                className={isExpanded ? "subject-card-expanded" : ""}
                 animate={{
                   opacity: expandedSubject && !isExpanded ? 0.4 : 1,
                   scale: expandedSubject && !isExpanded ? 0.97 : 1,

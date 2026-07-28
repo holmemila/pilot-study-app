@@ -6,7 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 
 
 export const metadata: Metadata = {
-  title: "SquawkPPL | Free EASA PPL Theory Study Platform",
+  title: "SquawkPPL | Free EASA PPL Mock Exam and Theory Study",
   description: "The free, modern way to study for your EASA PPL theory exams. 9 subjects, 2,000+ verified questions, mock exams, flashcards and a more features. Built by student pilots for student pilots.",
   keywords: "EASA PPL theory, PPL exam prep, private pilot licence, aviation study, PPL questions, EASA exam, pilot theory test, free PPL study",
   icons: {
@@ -15,14 +15,14 @@ export const metadata: Metadata = {
     apple: "/favicon.ico",
   },
   openGraph: {
-    title: "Squawk | Free EASA PPL Theory Study Platform",
+    title: "Squawk | Free EASA PPL Mock Exam and Theory Study",
     description: "Study for your EASA PPL theory exams for free. 9 subjects, 2,000+ questions, mock exams and flashcards.",
     type: "website",
     locale: "en_GB",
   },
   twitter: {
     card: "summary",
-    title: "Squawk | Free EASA PPL Theory Study Platform",
+    title: "Squawk | Free EASA PPL Mock Exam and Theory Study",
     description: "Study for your EASA PPL theory exams for free. 9 subjects, 2,000+ questions, mock exams and flashcards.",
   },
   robots: {

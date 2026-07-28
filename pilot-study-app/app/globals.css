@@ -90,3 +90,12 @@ button { cursor: pointer; font-family: inherit; }
     display: block;
   }
 }
+
+@media (max-width: 640px) {
+  .subject-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .subject-card-expanded {
+    grid-column: span 1 !important;
+  }
+}
