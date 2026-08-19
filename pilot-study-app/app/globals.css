@@ -64,7 +64,7 @@ button { cursor: pointer; font-family: inherit; }
 }
 
 .bmc-btn {
-  display: flex;
+  display: none !important;
 }
 
 @media (max-width: 640px) {
